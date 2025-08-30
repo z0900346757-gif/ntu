@@ -1,11 +1,15 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-    <meta charset="UTF-8">
-    <title>第一個葉面</title>
-</head>
-<body>
-    <h1>歡迎來到我的第一個網頁！</h1>
-    <p>這是由 GitHub Copilot 協助產生的網頁範例。</p>
-</body>
-</html>
+
+&inputph
+  recover=.false.,
+  tr2_ph=1.0d-15,
+  prefix='ZnO',
+  amass(1)=65.38,
+  amass(2)=15.9994,
+  outdir='./outdir/',
+  fildyn='ZnO.dyn',
+  fildvscf='dvscf',
+  ldisp=.true.,
+  epsil=.true.,
+  alpha_mix(1) = 0.1,
+  nq1=4, nq2=4, nq3=2
+/
