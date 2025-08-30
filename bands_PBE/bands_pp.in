@@ -1,0 +1,5 @@
+&BANDS
+outdir='./outdir'
+prefix='ZnO'
+filband='ZnO.dat'
+/
