@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>第一個葉面</title>
+</head>
+<body>
+    <h1>歡迎來到我的第一個網頁！</h1>
+    <p>這是由 GitHub Copilot 協助產生的網頁範例。</p>
+</body>
+</html>
