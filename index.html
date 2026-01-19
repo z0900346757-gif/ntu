@@ -46,6 +46,7 @@ button{
   background:#fdbb2d;
 }
 
+/* ===== 隱藏區 ===== */
 .secret{
   margin-top:18px;
   padding:18px;
@@ -56,7 +57,7 @@ button{
 }
 .secret.show{ display:block; }
 
-/* ===== Confetti ===== */
+/* ===== 彩帶 ===== */
 .confetti{ position:absolute; inset:-10vh -10vw; pointer-events:none; }
 .piece{
   position:absolute;
@@ -69,7 +70,7 @@ button{
   to{ transform: translateY(120vh) rotate(720deg); }
 }
 
-/* ===== Star Burst ===== */
+/* ===== 星星爆炸 ===== */
 .star{
   position:absolute;
   left:50%;
@@ -84,44 +85,41 @@ button{
   pointer-events:none;
   animation: star-burst 1.2s ease-out forwards;
 }
-
 @keyframes star-burst{
-  from{
-    transform: translate(-50%,-50%) scale(0.3);
-    opacity:1;
-  }
+  from{ transform: translate(-50%,-50%) scale(0.3); opacity:1; }
   to{
-    transform:
-      translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
-      scale(1.2);
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.2);
     opacity:0;
   }
 }
 
-/* ===== Birthday Text Burst ===== */
+/* ===== 生日快樂字樣（停久一點） ===== */
 .burst-text{
   position:absolute;
   left:50%;
   top:50%;
-  transform: translate(-50%,-50%) scale(0.6);
-  font-size: clamp(28px, 6vw, 48px);
+  transform: translate(-50%,-50%);
+  font-size: clamp(26px, 6vw, 44px);
   font-weight:800;
   color:#ffd966;
-  letter-spacing:.1em;
+  letter-spacing:.08em;
   pointer-events:none;
-  opacity:0;
-  animation: text-burst 1.4s ease-out forwards;
   text-shadow: 0 0 20px rgba(255,217,102,.8);
+  animation: text-burst 3.2s ease-out forwards;
 }
 
 @keyframes text-burst{
   0%{
     opacity:0;
-    transform: translate(-50%,-50%) scale(0.3);
+    transform: translate(-50%,-50%) scale(0.6);
   }
-  20%{
+  15%{
     opacity:1;
     transform: translate(-50%,-50%) scale(1.2);
+  }
+  70%{
+    opacity:1;
+    transform: translate(-50%,-50%) scale(1.1);
   }
   100%{
     opacity:0;
@@ -152,15 +150,14 @@ button{
       工作再忙也要照顧好自己。<br>
       希望妳今天能過得開心，<br>
       今年也順順利利。<br><br>
-
       P.S. 本來想放林俊傑的歌，<br>
       但我感冒唱不了，只好用播放清單代替 QQ<br><br>
-
       by Jie
     </p>
   </div>
 
-  <audio id="bgm" preload="auto"></audio>
+  <!-- 音樂 -->
+  <audio id="bgm" preload="auto" playsinline></audio>
 </div>
 
 <script>
@@ -170,51 +167,48 @@ const bgm = document.getElementById("bgm");
 const confetti = document.getElementById("confetti");
 const card = document.querySelector(".card");
 
-// ===== 音樂播放清單 =====
 const playlist = ["song1.wav","song2.wav","song3.wav"];
 let current = 0;
 let triggered = false;
 
-// ===== 星星爆炸 =====
+// 星星
 function starBurst(){
-  const count = 20;
-  for(let i=0;i<count;i++){
+  for(let i=0;i<20;i++){
     const star = document.createElement("div");
     star.className = "star";
-
-    const angle = Math.random() * Math.PI * 2;
-    const distance = 60 + Math.random() * 120;
-
-    star.style.setProperty("--x", Math.cos(angle)*distance + "px");
-    star.style.setProperty("--y", Math.sin(angle)*distance + "px");
-
+    const a = Math.random()*Math.PI*2;
+    const d = 60 + Math.random()*120;
+    star.style.setProperty("--x", Math.cos(a)*d+"px");
+    star.style.setProperty("--y", Math.sin(a)*d+"px");
     card.appendChild(star);
     setTimeout(()=>star.remove(),1300);
   }
 }
 
-// ===== 生日快樂文字爆炸 =====
+// 文字
 function textBurst(){
-  const text = document.createElement("div");
-  text.className = "burst-text";
-  text.textContent = "｡˚♡🧁 ʜᴀᴘᴘʏ ʙɪʀᴛʜᴅᴀʏ ᴛᴏ ᴍᴇᴇᴇ 🧁⋆｡˚";
-  card.appendChild(text);
-  setTimeout(()=>text.remove(),1400);
+  const t = document.createElement("div");
+  t.className = "burst-text";
+  t.textContent = "生日快樂";
+  card.appendChild(t);
+  setTimeout(()=>t.remove(),3200);
 }
 
-// ===== 點擊事件 =====
 goBtn.addEventListener("click", () => {
   if(triggered) return;
   triggered = true;
 
   starBurst();
   textBurst();
-
   secret.classList.add("show");
 
+  // ★ 音樂關鍵修正 ★
   bgm.src = playlist[current];
-  bgm.volume = 0.8;
-  bgm.play().catch(()=>{});
+  bgm.load();                 // 強制載入
+  bgm.volume = 0.9;
+  bgm.play().catch(err=>{
+    console.log("Audio play failed:", err);
+  });
 
   // 彩帶
   confetti.innerHTML = "";
@@ -228,10 +222,11 @@ goBtn.addEventListener("click", () => {
   }
 });
 
-// 播完換下一首
+// 自動換歌
 bgm.addEventListener("ended", () => {
   current = (current + 1) % playlist.length;
   bgm.src = playlist[current];
+  bgm.load();
   bgm.play();
 });
 </script>
