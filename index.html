@@ -46,16 +46,21 @@ button{
   background:#fdbb2d;
 }
 
-/* ===== 隱藏區 ===== */
+/* ===== 隱藏祝福（淡入） ===== */
 .secret{
   margin-top:18px;
   padding:18px;
   border-radius:18px;
   background: rgba(0,0,0,.25);
-  display:none;
   line-height:1.7;
+  opacity:0;
+  transform: translateY(10px);
+  transition: opacity .8s ease, transform .8s ease;
 }
-.secret.show{ display:block; }
+.secret.show{
+  opacity:1;
+  transform: translateY(0);
+}
 
 /* ===== 彩帶 ===== */
 .confetti{ position:absolute; inset:-10vh -10vw; pointer-events:none; }
@@ -118,7 +123,7 @@ button{
 /* ===== 箭頭提示 ===== */
 .hint-arrow{
   position:absolute;
-  left:calc(50% + 40px);
+  left:calc(50% + 42px);
   top:45%;
   display:flex;
   align-items:center;
@@ -129,13 +134,12 @@ button{
   pointer-events:none;
 }
 .hint-arrow span{ font-size:20px; }
-
 @keyframes arrow-bounce{
   0%,100%{ transform: translateY(0); }
   50%{ transform: translateY(-6px); }
 }
 
-/* ===== 生日快樂文字 ===== */
+/* ===== 生日字樣 ===== */
 .burst-text{
   position:absolute;
   left:50%;
@@ -176,9 +180,7 @@ button{
       希望妳今天能過得開心，<br>
       今年也順順利利。
     </p>
-    <p style="text-align:right; margin-top:10px;">
-      by jie
-    </p>
+    <p style="text-align:right; margin-top:10px;">by jie</p>
   </div>
 
   <audio id="bgmLoop" src="bg.wav" preload="auto" loop playsinline></audio>
@@ -192,6 +194,10 @@ const card = document.querySelector(".card");
 const bgmLoop = document.getElementById("bgmLoop");
 
 let triggered = false;
+
+function vibrate(pattern){
+  if (navigator.vibrate) navigator.vibrate(pattern);
+}
 
 function starBurst(){
   for(let i=0;i<20;i++){
@@ -220,7 +226,15 @@ function showClickStar(){
   s.addEventListener("click", () => {
     s.remove();
     hint.remove();
+
+    vibrate(60);          // 點星星震一下
     textBurst();
+
+    // 5 秒後顯示祝福 + 再震一次
+    setTimeout(() => {
+      secret.classList.add("show");
+      vibrate([80,40,80]);
+    }, 5000);
   });
 }
 
@@ -238,10 +252,9 @@ goBtn.addEventListener("click", () => {
 
   starBurst();
   showClickStar();
-  secret.classList.add("show");
 
   bgmLoop.volume = 0.25;
-  bgmLoop.load();           // ⭐⭐⭐ 關鍵：強制重新載入音樂
+  bgmLoop.load();
   bgmLoop.play().catch(()=>{});
 
   confetti.innerHTML = "";
