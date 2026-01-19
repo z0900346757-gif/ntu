@@ -70,7 +70,7 @@ button{
   to{ transform: translateY(120vh) rotate(720deg); }
 }
 
-/* ===== 星星 ===== */
+/* ===== 星星爆炸 ===== */
 .star{
   position:absolute;
   left:50%;
@@ -91,6 +91,28 @@ button{
     transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.2);
     opacity:0;
   }
+}
+
+/* ===== 可點擊星星 ===== */
+.click-star{
+  position:absolute;
+  left:50%;
+  top:45%;
+  transform: translate(-50%,-50%);
+  width:42px;
+  height:42px;
+  background:gold;
+  clip-path: polygon(
+    50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,
+    50% 70%,21% 91%,32% 57%,2% 35%,39% 35%
+  );
+  cursor:pointer;
+  animation: star-pulse 1.6s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(255,215,0,.8);
+}
+@keyframes star-pulse{
+  0%,100%{ transform: translate(-50%,-50%) scale(1); }
+  50%{ transform: translate(-50%,-50%) scale(1.15); }
 }
 
 /* ===== 生日快樂文字 ===== */
@@ -132,15 +154,12 @@ button{
       還是想祝妳生日快樂。<br>
       祝妳心想事成，也記得適時休息，<br>
       希望妳今天能過得開心，<br>
-      今年也順順利利。<br><br>
-             by Jie
+      今年也順順利利。<br>
+    <p>　　　　　by jie</p>
     </p>
   </div>
 
-  <!-- ✅ 主音樂：一開始就指定 src（關鍵修正） -->
-  <audio id="bgmMain" src="song1.wav" preload="auto" playsinline></audio>
-
-  <!-- 背景音樂 -->
+  <!-- 🎶 只剩背景音樂 -->
   <audio id="bgmLoop" src="bg.wav" preload="auto" loop playsinline></audio>
 </div>
 
@@ -149,20 +168,8 @@ const goBtn = document.getElementById("go");
 const secret = document.getElementById("secret");
 const confetti = document.getElementById("confetti");
 const card = document.querySelector(".card");
-
-const bgmMain = document.getElementById("bgmMain");
 const bgmLoop = document.getElementById("bgmLoop");
 
-// GitHub Pages 相對路徑
-const BASE = window.location.pathname.replace(/\/[^\/]*$/, "/");
-
-const playlist = [
-  BASE + "song1.wav",
-  BASE + "song2.wav",
-  BASE + "song3.wav"
-];
-
-let current = 0;
 let triggered = false;
 
 function starBurst(){
@@ -178,10 +185,21 @@ function starBurst(){
   }
 }
 
+function showClickStar(){
+  const s = document.createElement("div");
+  s.className = "click-star";
+  card.appendChild(s);
+
+  s.addEventListener("click", () => {
+    s.remove();
+    textBurst();
+  });
+}
+
 function textBurst(){
   const t = document.createElement("div");
   t.className = "burst-text";
-  t.textContent = "｡˚♡🧁 ʜᴀᴘᴘʏ ʙɪʀᴛʜᴅᴀʏ 🧁⋆｡˚";
+  t.textContent = "｡˚♡🧁 ʜᴀᴘᴘʏ ʙɪʀᴛʜᴅᴀʏ 🧁⋆22｡";
   card.appendChild(t);
   setTimeout(()=>t.remove(),5000);
 }
@@ -191,18 +209,12 @@ goBtn.addEventListener("click", () => {
   triggered = true;
 
   starBurst();
-  textBurst();
+  showClickStar();
   secret.classList.add("show");
 
   // 背景音樂
   bgmLoop.volume = 0.25;
   bgmLoop.play().catch(()=>{});
-
-  // 主音樂
-  bgmMain.src = playlist[current];
-  bgmMain.volume = 0.15;
-  bgmMain.load();
-  bgmMain.play().catch(()=>{});
 
   // 彩帶
   confetti.innerHTML = "";
@@ -215,15 +227,6 @@ goBtn.addEventListener("click", () => {
     confetti.appendChild(p);
   }
 });
-
-// 主音樂輪播
-bgmMain.addEventListener("ended", () => {
-  current = (current + 1) % playlist.length;
-  bgmMain.src = playlist[current];
-  bgmMain.load();
-  bgmMain.play();
-});
 </script>
 </body>
 </html>
-
