@@ -70,7 +70,7 @@ button{
   to{ transform: translateY(120vh) rotate(720deg); }
 }
 
-/* ===== 星星爆炸 ===== */
+/* ===== 星星 ===== */
 .star{
   position:absolute;
   left:50%;
@@ -93,7 +93,7 @@ button{
   }
 }
 
-/* ===== 生日快樂字樣（停久一點） ===== */
+/* ===== 生日快樂文字 ===== */
 .burst-text{
   position:absolute;
   left:50%;
@@ -107,24 +107,11 @@ button{
   text-shadow: 0 0 20px rgba(255,217,102,.8);
   animation: text-burst 3.2s ease-out forwards;
 }
-
 @keyframes text-burst{
-  0%{
-    opacity:0;
-    transform: translate(-50%,-50%) scale(0.6);
-  }
-  15%{
-    opacity:1;
-    transform: translate(-50%,-50%) scale(1.2);
-  }
-  70%{
-    opacity:1;
-    transform: translate(-50%,-50%) scale(1.1);
-  }
-  100%{
-    opacity:0;
-    transform: translate(-50%,-80%) scale(1.1);
-  }
+  0%{ opacity:0; transform: translate(-50%,-50%) scale(0.6); }
+  15%{ opacity:1; transform: translate(-50%,-50%) scale(1.2); }
+  70%{ opacity:1; transform: translate(-50%,-50%) scale(1.1); }
+  100%{ opacity:0; transform: translate(-50%,-80%) scale(1.1); }
 }
 </style>
 </head>
@@ -134,10 +121,7 @@ button{
   <div class="confetti" id="confetti"></div>
 
   <h1>🎂 生日快樂</h1>
-  <p class="sub">
-    一個小小的生日祝福。<br>
-    點擊下方開始。
-  </p>
+  <p class="sub">一個小小的生日祝福。<br>點擊下方開始。</p>
 
   <button id="go">開始 🎵</button>
 
@@ -147,7 +131,6 @@ button{
       雖然剛認識妳不久（開玩笑），<br>
       還是想祝妳生日快樂。<br>
       祝妳心想事成，也記得適時休息，<br>
-      工作再忙也要照顧好自己。<br>
       希望妳今天能過得開心，<br>
       今年也順順利利。<br><br>
       P.S. 本來想放林俊傑的歌，<br>
@@ -156,22 +139,26 @@ button{
     </p>
   </div>
 
-  <!-- 音樂 -->
-  <audio id="bgm" preload="auto" playsinline></audio>
+  <!-- 主音樂（輪播） -->
+  <audio id="bgmMain" preload="auto" playsinline></audio>
+
+  <!-- 背景音樂（循環、小聲） -->
+  <audio id="bgmLoop" src="bg.wav" preload="auto" loop playsinline></audio>
 </div>
 
 <script>
 const goBtn = document.getElementById("go");
 const secret = document.getElementById("secret");
-const bgm = document.getElementById("bgm");
 const confetti = document.getElementById("confetti");
 const card = document.querySelector(".card");
+
+const bgmMain = document.getElementById("bgmMain");
+const bgmLoop = document.getElementById("bgmLoop");
 
 const playlist = ["song1.wav","song2.wav","song3.wav"];
 let current = 0;
 let triggered = false;
 
-// 星星
 function starBurst(){
   for(let i=0;i<20;i++){
     const star = document.createElement("div");
@@ -185,7 +172,6 @@ function starBurst(){
   }
 }
 
-// 文字
 function textBurst(){
   const t = document.createElement("div");
   t.className = "burst-text";
@@ -202,13 +188,15 @@ goBtn.addEventListener("click", () => {
   textBurst();
   secret.classList.add("show");
 
-  // ★ 音樂關鍵修正 ★
-  bgm.src = playlist[current];
-  bgm.load();                 // 強制載入
-  bgm.volume = 0.9;
-  bgm.play().catch(err=>{
-    console.log("Audio play failed:", err);
-  });
+  // 🎶 背景音樂（小聲、循環）
+  bgmLoop.volume = 0.25;
+  bgmLoop.play().catch(()=>{});
+
+  // 🎵 主音樂
+  bgmMain.src = playlist[current];
+  bgmMain.volume = 0.9;
+  bgmMain.load();
+  bgmMain.play().catch(()=>{});
 
   // 彩帶
   confetti.innerHTML = "";
@@ -222,12 +210,12 @@ goBtn.addEventListener("click", () => {
   }
 });
 
-// 自動換歌
-bgm.addEventListener("ended", () => {
+// 主音樂輪播
+bgmMain.addEventListener("ended", () => {
   current = (current + 1) % playlist.length;
-  bgm.src = playlist[current];
-  bgm.load();
-  bgm.play();
+  bgmMain.src = playlist[current];
+  bgmMain.load();
+  bgmMain.play();
 });
 </script>
 </body>
