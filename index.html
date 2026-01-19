@@ -121,20 +121,20 @@ button{
   <div class="confetti" id="confetti"></div>
 
   <h1>🎂 生日快樂</h1>
-  <p class="sub">一個小小的生日祝福。<br>點擊下方開始。</p>
+  <p class="sub">一個小小的20歲生日祝福。<br>點擊下方開始。</p>
 
   <button id="go">開始 🎵</button>
 
   <div class="secret" id="secret">
-    <h2>🎉 怡靜，生日快樂</h2>
+    <h2>🎉 怡靜，20歲生日快樂!!</h2>
     <p>
       雖然剛認識妳不久（開玩笑），<br>
       還是想祝妳生日快樂。<br>
       祝妳心想事成，也記得適時休息，<br>
       希望妳今天能過得開心，<br>
       今年也順順利利。<br><br>
-      P.S. 本來想放林俊傑的歌，<br>
-      但我感冒唱不了，只好用播放清單代替 QQ<br><br>
+      P.S. 本來想放林俊傑的歌(只能亂唱其他ㄌ)，<br>
+      
       by Jie
     </p>
   </div>
@@ -155,7 +155,14 @@ const card = document.querySelector(".card");
 const bgmMain = document.getElementById("bgmMain");
 const bgmLoop = document.getElementById("bgmLoop");
 
-const playlist = ["song1.wav","song2.wav","song3.wav"];
+const BASE = window.location.pathname.replace(/\/[^\/]*$/, "/");
+
+const playlist = [
+  BASE + "song1.wav",
+  BASE + "song2.wav",
+  BASE + "song3.wav"
+];
+
 let current = 0;
 let triggered = false;
 
@@ -194,7 +201,7 @@ goBtn.addEventListener("click", () => {
 
   // 🎵 主音樂
   bgmMain.src = playlist[current];
-  bgmMain.volume = 0.9;
+  bgmMain.volume = 0.15;
   bgmMain.load();
   bgmMain.play().catch(()=>{});
 
@@ -220,3 +227,4 @@ bgmMain.addEventListener("ended", () => {
 </script>
 </body>
 </html>
+
