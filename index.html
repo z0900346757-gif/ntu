@@ -93,14 +93,14 @@ button{
   }
 }
 
-/* ===== 可點擊星星（⭐放大一點） ===== */
+/* ===== 可點擊星星 ===== */
 .click-star{
   position:absolute;
   left:50%;
   top:45%;
   transform: translate(-50%,-50%);
-  width:56px;              /* ← 原本 42px，放大 */
-  height:56px;
+  width:64px;
+  height:64px;
   background:gold;
   clip-path: polygon(
     50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,
@@ -128,10 +128,7 @@ button{
   animation: arrow-bounce 1.2s ease-in-out infinite;
   pointer-events:none;
 }
-
-.hint-arrow span{
-  font-size:20px;
-}
+.hint-arrow span{ font-size:20px; }
 
 @keyframes arrow-bounce{
   0%,100%{ transform: translateY(0); }
@@ -215,7 +212,7 @@ function showClickStar(){
 
   const hint = document.createElement("div");
   hint.className = "hint-arrow";
-  hint.innerHTML = "<span>👉</span> 點我";
+  hint.innerHTML = "<span>👈</span> 點我";
 
   card.appendChild(s);
   card.appendChild(hint);
@@ -244,6 +241,7 @@ goBtn.addEventListener("click", () => {
   secret.classList.add("show");
 
   bgmLoop.volume = 0.25;
+  bgmLoop.load();           // ⭐⭐⭐ 關鍵：強制重新載入音樂
   bgmLoop.play().catch(()=>{});
 
   confetti.innerHTML = "";
