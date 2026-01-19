@@ -120,10 +120,10 @@ button{
   50%{ transform: translate(-50%,-50%) scale(1.15); }
 }
 
-/* ===== 箭頭 ===== */
+/* ===== 箭頭提示 ===== */
 .hint-arrow{
   position:absolute;
-  left:calc(50% + 42px);
+  left:calc(50% + 44px);
   top:45%;
   display:flex;
   align-items:center;
@@ -139,20 +139,33 @@ button{
   50%{ transform: translateY(-6px); }
 }
 
-/* ===== 倒數文字 ===== */
+/* ===== 倒數（高對比版） ===== */
 .countdown{
   position:absolute;
   left:50%;
-  top:calc(45% + 55px);
+  top:calc(45% + 80px);
   transform: translateX(-50%);
-  font-size:20px;
-  font-weight:700;
-  opacity:.9;
-  animation: countdown-pop .3s ease;
+  font-size: clamp(34px, 9vw, 56px);
+  font-weight:900;
+  letter-spacing:.15em;
+  color:#ffffff;
+  text-shadow:
+    0 0 10px rgba(150,200,255,.9),
+    0 0 22px rgba(120,180,255,.8),
+    0 0 40px rgba(80,140,255,.6);
+  opacity:0;
+  animation: countdown-pop .45s ease forwards;
 }
+
 @keyframes countdown-pop{
-  from{ transform: translateX(-50%) scale(.7); opacity:0; }
-  to{ transform: translateX(-50%) scale(1); opacity:1; }
+  from{
+    opacity:0;
+    transform: translateX(-50%) scale(.6);
+  }
+  to{
+    opacity:1;
+    transform: translateX(-50%) scale(1);
+  }
 }
 
 /* ===== Happy Birthday ===== */
@@ -191,11 +204,11 @@ button{
     <h2>🎉 怡靜，20歲生日快樂!!</h2>
     <p>
       雖然剛認識妳不久（開玩笑），<br>
-  還是想祝妳生日快樂。<br>
-  祝妳心想事成，也記得適時休息，<br>
-  工作別太累到自己 ʕ•̀ o •́ ʔ，<br>
-  今天妳是最幸福、最幸運的人，<br>
-  祝妳今年也順順利利。
+      還是想祝妳生日快樂。<br>
+      祝妳心想事成，也記得適時休息，<br>
+      工作別太累到自己 ʕ•̀ o •́ ʔ，<br>
+      今天妳是最幸福、最幸運的人，<br>
+      祝妳今年也順順利利。
     </p>
     <p style="text-align:right; margin-top:10px;">by jie</p>
   </div>
@@ -228,20 +241,27 @@ function starBurst(){
 }
 
 function startCountdown(){
-  let t=3.8;
+  const words=["準備…","來了…","現在！"];
+  let i=0;
   const cd=document.createElement("div");
   cd.className="countdown";
   card.appendChild(cd);
+  cd.textContent=words[i];
+  vibrate(20);
 
   const timer=setInterval(()=>{
-    cd.textContent=t.toFixed(1);
-    vibrate(20);
-    t-=1;
-    if(t<0){
+    i++;
+    if(i<words.length){
+      cd.textContent=words[i];
+      cd.style.animation="none";
+      cd.offsetHeight;
+      cd.style.animation="countdown-pop .45s ease forwards";
+      vibrate(30);
+    }else{
       clearInterval(timer);
       cd.remove();
     }
-  },1000);
+  },1300);
 }
 
 function textBurst(){
@@ -265,7 +285,6 @@ function showClickStar(){
     vibrate(60);
     textBurst();
     startCountdown();
-
     setTimeout(()=>{
       secret.classList.add("show");
       vibrate([80,40,80]);
@@ -284,4 +303,3 @@ goBtn.addEventListener("click",()=>{
 </script>
 </body>
 </html>
-
