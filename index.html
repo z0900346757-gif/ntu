@@ -1,186 +1,239 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>生日快樂 🎉</title>
-  <style>
-    :root { --bg1:#0b1020; --bg2:#1a2a6c; --bg3:#b21f1f; --bg4:#fdbb2d; }
-    *{box-sizing:border-box}
-    body{
-      margin:0; min-height:100vh; display:grid; place-items:center;
-      font-family: system-ui, -apple-system, "Noto Sans TC", "PingFang TC", sans-serif;
-      color:#fff; overflow:hidden;
-      background: radial-gradient(1200px 600px at 20% 20%, rgba(253,187,45,.35), transparent 60%),
-                  radial-gradient(900px 500px at 80% 30%, rgba(178,31,31,.35), transparent 60%),
-                  linear-gradient(135deg, var(--bg1), var(--bg2));
-    }
-    .card{
-      width:min(92vw, 760px);
-      padding:28px 22px;
-      border-radius:24px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.18);
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
-      backdrop-filter: blur(10px);
-      position:relative;
-    }
-    h1{
-      margin:0 0 10px;
-      font-size: clamp(34px, 5vw, 56px);
-      letter-spacing: .04em;
-    }
-    .sub{
-      margin:0 0 18px;
-      opacity:.9;
-      font-size: clamp(14px, 2.3vw, 18px);
-      line-height:1.7;
-    }
-    .row{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
-    input{
-      flex:1 1 240px;
-      padding:12px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.18);
-      color:#fff;
-      outline:none;
-      font-size:16px;
-    }
-    button{
-      padding:12px 16px;
-      border-radius:14px;
-      border:0;
-      cursor:pointer;
-      font-weight:700;
-      font-size:16px;
-      color:#0b1020;
-      background: linear-gradient(135deg, #fdbb2d, #ffef9a);
-      box-shadow: 0 10px 30px rgba(253,187,45,.25);
-      transition: transform .08s ease;
-    }
-    button:active{ transform: translateY(1px) scale(.99); }
-    .hint{ margin:10px 0 0; opacity:.75; font-size:13px; }
-    .secret{
-      margin-top:18px;
-      padding:18px;
-      border-radius:18px;
-      background: rgba(0,0,0,.20);
-      border:1px dashed rgba(255,255,255,.22);
-      display:none;
-    }
-    .secret.show{ display:block; }
-    .big{
-      font-size: clamp(22px, 4.2vw, 34px);
-      margin: 0 0 6px;
-    }
-    .msg{
-      margin:0;
-      opacity:.95;
-      line-height:1.8;
-      font-size: clamp(14px, 2.4vw, 18px);
-      white-space: pre-wrap;
-    }
-    /* Confetti */
-    .confetti{
-      position:absolute; inset:-10vh -10vw; pointer-events:none;
-      overflow:hidden;
-    }
-    .piece{
-      position:absolute;
-      width:10px; height:16px;
-      opacity:.9;
-      top:-20px;
-      transform: translate3d(0,0,0) rotate(0deg);
-      animation: fall 3.6s linear infinite;
-      border-radius:3px;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
-    }
-    @keyframes fall{
-      to{ transform: translate3d(var(--dx), 120vh, 0) rotate(720deg); }
-    }
-    .footer{
-      margin-top:16px;
-      opacity:.7;
-      font-size:12px;
-      text-align:right;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>生日快樂 🎉</title>
+
+<style>
+:root { --bg1:#0b1020; --bg2:#1a2a6c; }
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  font-family: system-ui, -apple-system, "Noto Sans TC", "PingFang TC", sans-serif;
+  color:#fff;
+  overflow:hidden;
+  background:
+    radial-gradient(1200px 600px at 20% 20%, rgba(253,187,45,.35), transparent 60%),
+    linear-gradient(135deg, var(--bg1), var(--bg2));
+}
+
+.card{
+  width:min(92vw, 760px);
+  padding:28px 22px;
+  border-radius:24px;
+  background: rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  position:relative;
+  overflow:hidden;
+}
+
+h1{ margin:0 0 10px; font-size: clamp(34px, 5vw, 56px); }
+.sub{ margin:0 0 18px; opacity:.9; line-height:1.7; }
+
+button{
+  padding:14px 18px;
+  border-radius:14px;
+  border:0;
+  cursor:pointer;
+  font-weight:700;
+  font-size:16px;
+  background:#fdbb2d;
+}
+
+.secret{
+  margin-top:18px;
+  padding:18px;
+  border-radius:18px;
+  background: rgba(0,0,0,.25);
+  display:none;
+  line-height:1.7;
+}
+.secret.show{ display:block; }
+
+/* ===== Confetti ===== */
+.confetti{ position:absolute; inset:-10vh -10vw; pointer-events:none; }
+.piece{
+  position:absolute;
+  width:10px;
+  height:16px;
+  top:-20px;
+  animation: fall 3.5s linear infinite;
+}
+@keyframes fall{
+  to{ transform: translateY(120vh) rotate(720deg); }
+}
+
+/* ===== Star Burst ===== */
+.star{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:10px;
+  height:10px;
+  background:gold;
+  clip-path: polygon(
+    50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,
+    50% 70%,21% 91%,32% 57%,2% 35%,39% 35%
+  );
+  pointer-events:none;
+  animation: star-burst 1.2s ease-out forwards;
+}
+
+@keyframes star-burst{
+  from{
+    transform: translate(-50%,-50%) scale(0.3);
+    opacity:1;
+  }
+  to{
+    transform:
+      translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
+      scale(1.2);
+    opacity:0;
+  }
+}
+
+/* ===== Birthday Text Burst ===== */
+.burst-text{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%,-50%) scale(0.6);
+  font-size: clamp(28px, 6vw, 48px);
+  font-weight:800;
+  color:#ffd966;
+  letter-spacing:.1em;
+  pointer-events:none;
+  opacity:0;
+  animation: text-burst 1.4s ease-out forwards;
+  text-shadow: 0 0 20px rgba(255,217,102,.8);
+}
+
+@keyframes text-burst{
+  0%{
+    opacity:0;
+    transform: translate(-50%,-50%) scale(0.3);
+  }
+  20%{
+    opacity:1;
+    transform: translate(-50%,-50%) scale(1.2);
+  }
+  100%{
+    opacity:0;
+    transform: translate(-50%,-80%) scale(1.1);
+  }
+}
+</style>
 </head>
+
 <body>
-  <div class="card" id="card">
-    <div class="confetti" id="confetti" aria-hidden="true"></div>
+<div class="card">
+  <div class="confetti" id="confetti"></div>
 
-    <h1>🎂 生日快樂</h1>
-    <p class="sub">
-      這個小驚喜不用花錢、只要打開就能看到。<br>
-      先輸入壽星名字（或暱稱），再按下「打開驚喜」！
+  <h1>🎂 生日快樂</h1>
+  <p class="sub">
+    一個小小的生日祝福。<br>
+    點擊下方開始。
+  </p>
+
+  <button id="go">開始 🎵</button>
+
+  <div class="secret" id="secret">
+    <h2>🎉 怡靜，生日快樂</h2>
+    <p>
+      雖然剛認識妳不久（開玩笑），<br>
+      還是想祝妳生日快樂。<br>
+      祝妳心想事成，也記得適時休息，<br>
+      工作再忙也要照顧好自己。<br>
+      希望妳今天能過得開心，<br>
+      今年也順順利利。<br><br>
+
+      P.S. 本來想放林俊傑的歌，<br>
+      但我感冒唱不了，只好用播放清單代替 QQ<br><br>
+
+      by Jie
     </p>
-
-    <div class="row">
-      <input id="name" placeholder="輸入壽星名字 / 暱稱（例如：欣惠）" maxlength="20" />
-      <button id="go">打開驚喜 ✨</button>
-    </div>
-    <div class="hint">小彩蛋：可以把下面的祝福文字改成你自己的。</div>
-
-    <div class="secret" id="secret">
-      <p class="big" id="headline">🎉</p>
-      <p class="msg" id="msg"></p>
-    </div>
-
-    <div class="footer">Made with ❤️ (free)</div>
   </div>
 
-  <script>
-    const nameEl = document.getElementById('name');
-    const goBtn = document.getElementById('go');
-    const secret = document.getElementById('secret');
-    const headline = document.getElementById('headline');
-    const msg = document.getElementById('msg');
-    const confetti = document.getElementById('confetti');
+  <audio id="bgm" preload="auto"></audio>
+</div>
 
-    // 你要寫給對方的話（可改）
-    function buildMessage(who){
-      const n = who?.trim() || "你";
-      return `給 ${n}：\n\n生日快樂！🎈\n希望你今天被好事包圍，\n想做的事都順順利利、\n想要的都慢慢靠近。\n\n也希望你每天都能很開心 :)`;
-    }
+<script>
+const goBtn = document.getElementById("go");
+const secret = document.getElementById("secret");
+const bgm = document.getElementById("bgm");
+const confetti = document.getElementById("confetti");
+const card = document.querySelector(".card");
 
-    function launchConfetti(){
-      confetti.innerHTML = "";
-      const colors = ["#fdbb2d","#ff6b6b","#4dd4ff","#7cff9e","#c7a6ff","#ffffff"];
-      const count = 140;
+// ===== 音樂播放清單 =====
+const playlist = ["song1.wav","song2.wav","song3.wav"];
+let current = 0;
+let triggered = false;
 
-      for(let i=0;i<count;i++){
-        const p = document.createElement('div');
-        p.className = 'piece';
-        const left = Math.random()*100;
-        const delay = Math.random()*1.8;
-        const dur = 2.6 + Math.random()*2.2;
-        const dx = (Math.random()*2-1) * (40 + Math.random()*120);
+// ===== 星星爆炸 =====
+function starBurst(){
+  const count = 20;
+  for(let i=0;i<count;i++){
+    const star = document.createElement("div");
+    star.className = "star";
 
-        p.style.left = left + "vw";
-        p.style.background = colors[Math.floor(Math.random()*colors.length)];
-        p.style.animationDelay = delay + "s";
-        p.style.animationDuration = dur + "s";
-        p.style.setProperty("--dx", dx + "px");
-        p.style.transform = `rotate(${Math.random()*360}deg)`;
-        p.style.width = (8 + Math.random()*8) + "px";
-        p.style.height = (10 + Math.random()*14) + "px";
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 60 + Math.random() * 120;
 
-        confetti.appendChild(p);
-      }
-    }
+    star.style.setProperty("--x", Math.cos(angle)*distance + "px");
+    star.style.setProperty("--y", Math.sin(angle)*distance + "px");
 
-    function openSurprise(){
-      const who = nameEl.value;
-      headline.textContent = `🎉 ${who?.trim() || "你"} 生日快樂！`;
-      msg.textContent = buildMessage(who);
-      secret.classList.add('show');
-      launchConfetti();
-    }
+    card.appendChild(star);
+    setTimeout(()=>star.remove(),1300);
+  }
+}
 
-    goBtn.addEventListener('click', openSurprise);
-    nameEl.addEventListener('keydown', (e)=>{ if(e.key==="Enter") openSurprise(); });
-  </script>
+// ===== 生日快樂文字爆炸 =====
+function textBurst(){
+  const text = document.createElement("div");
+  text.className = "burst-text";
+  text.textContent = "｡˚♡🧁 ʜᴀᴘᴘʏ ʙɪʀᴛʜᴅᴀʏ ᴛᴏ ᴍᴇᴇᴇ 🧁⋆｡˚";
+  card.appendChild(text);
+  setTimeout(()=>text.remove(),1400);
+}
+
+// ===== 點擊事件 =====
+goBtn.addEventListener("click", () => {
+  if(triggered) return;
+  triggered = true;
+
+  starBurst();
+  textBurst();
+
+  secret.classList.add("show");
+
+  bgm.src = playlist[current];
+  bgm.volume = 0.8;
+  bgm.play().catch(()=>{});
+
+  // 彩帶
+  confetti.innerHTML = "";
+  for(let i=0;i<120;i++){
+    const p = document.createElement("div");
+    p.className = "piece";
+    p.style.left = Math.random()*100 + "vw";
+    p.style.background = ["#fdbb2d","#ff6b6b","#4dd4ff","#7cff9e"][i%4];
+    p.style.animationDelay = Math.random()*1.5 + "s";
+    confetti.appendChild(p);
+  }
+});
+
+// 播完換下一首
+bgm.addEventListener("ended", () => {
+  current = (current + 1) % playlist.length;
+  bgm.src = playlist[current];
+  bgm.play();
+});
+</script>
 </body>
 </html>
