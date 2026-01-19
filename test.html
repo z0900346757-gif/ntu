@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>run_birthday.exe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body {
+    margin: 0;
+    background: #000;
+    color: #00ff9c;
+    font-family: Consolas, Menlo, Monaco, monospace;
+    font-size: 15px;
+  }
+  #terminal {
+    padding: 20px;
+    white-space: pre-wrap;
+    line-height: 1.6;
+  }
+  .cursor::after {
+    content: "█";
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div id="terminal" class="cursor"></div>
+
+<script>
+const lines = [
+  "$ init birthday_protocol --user target",
+  "loading modules...",
+  "checking system time ........ OK",
+  "verifying special date ...... MATCH",
+  "allocating happiness buffer...",
+  "injecting good vibes ........ DONE",
+  "",
+  ">>> EXECUTING MESSAGE <<<",
+  "",
+  "Happy Birthday.",
+  "",
+  "No decorations.",
+  "No noise.",
+  "Just code.",
+  "",
+  "May your bugs be shallow,",
+  "your builds be clean,",
+  "and your life runtime be long.",
+  "",
+  "[ process finished successfully ]"
+];
+
+const terminal = document.getElementById("terminal");
+let i = 0;
+
+function typeLine() {
+  if (i < lines.length) {
+    terminal.textContent += lines[i] + "\n";
+    i++;
+    setTimeout(typeLine, 350);
+  }
+}
+
+typeLine();
+</script>
+
+</body>
+</html>
