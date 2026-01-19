@@ -139,7 +139,23 @@ button{
   50%{ transform: translateY(-6px); }
 }
 
-/* ===== Happy Birthday 字樣 ===== */
+/* ===== 倒數文字 ===== */
+.countdown{
+  position:absolute;
+  left:50%;
+  top:calc(45% + 55px);
+  transform: translateX(-50%);
+  font-size:20px;
+  font-weight:700;
+  opacity:.9;
+  animation: countdown-pop .3s ease;
+}
+@keyframes countdown-pop{
+  from{ transform: translateX(-50%) scale(.7); opacity:0; }
+  to{ transform: translateX(-50%) scale(1); opacity:1; }
+}
+
+/* ===== Happy Birthday ===== */
 .burst-text{
   position:absolute;
   left:50%;
@@ -178,8 +194,8 @@ button{
       還是想祝妳生日快樂。<br>
       祝妳心想事成，也記得適時休息，<br>
       工作別太累到自己 ʕ•̀ o • ʔ ，<br>
-      希望妳今天能過得開心，<br>
-      今年也順順利利。
+      今天妳是最幸福幸運ㄉ人，<br>
+      也祝今年也順順利利。
     </p>
     <p style="text-align:right; margin-top:10px;">by jie</p>
   </div>
@@ -196,78 +212,75 @@ const bgmLoop = document.getElementById("bgmLoop");
 
 let triggered = false;
 
-function vibrate(pattern){
-  if (navigator.vibrate) navigator.vibrate(pattern);
-}
+function vibrate(p){ if(navigator.vibrate) navigator.vibrate(p); }
 
 function starBurst(){
   for(let i=0;i<20;i++){
-    const star = document.createElement("div");
-    star.className = "star";
-    const a = Math.random()*Math.PI*2;
-    const d = 60 + Math.random()*120;
-    star.style.setProperty("--x", Math.cos(a)*d+"px");
-    star.style.setProperty("--y", Math.sin(a)*d+"px");
+    const star=document.createElement("div");
+    star.className="star";
+    const a=Math.random()*Math.PI*2;
+    const d=60+Math.random()*120;
+    star.style.setProperty("--x",Math.cos(a)*d+"px");
+    star.style.setProperty("--y",Math.sin(a)*d+"px");
     card.appendChild(star);
     setTimeout(()=>star.remove(),1300);
   }
 }
 
-function showClickStar(){
-  const s = document.createElement("div");
-  s.className = "click-star";
+function startCountdown(){
+  let t=3.8;
+  const cd=document.createElement("div");
+  cd.className="countdown";
+  card.appendChild(cd);
 
-  const hint = document.createElement("div");
-  hint.className = "hint-arrow";
-  hint.innerHTML = "<span>👈</span> 點我";
-
-  card.appendChild(s);
-  card.appendChild(hint);
-
-  s.addEventListener("click", () => {
-    s.remove();
-    hint.remove();
-
-    vibrate(60);
-    textBurst();
-
-    setTimeout(() => {
-      secret.classList.add("show");
-      vibrate([80,40,80]);
-    }, 3800);
-  });
+  const timer=setInterval(()=>{
+    cd.textContent=t.toFixed(1);
+    vibrate(20);
+    t-=1;
+    if(t<0){
+      clearInterval(timer);
+      cd.remove();
+    }
+  },1000);
 }
 
 function textBurst(){
-  const t = document.createElement("div");
-  t.className = "burst-text";
-  t.textContent = "｡˚♡🧁 ʜᴀᴘᴘʏ ʙɪʀᴛʜᴅᴀʏ 🧁⋆20｡";
+  const t=document.createElement("div");
+  t.className="burst-text";
+  t.textContent="｡˚♡🧁 ʜᴀᴘᴘʏ ʙɪʀᴛʜᴅᴀʏ 🧁⋆20｡";
   card.appendChild(t);
   setTimeout(()=>t.remove(),3800);
 }
 
-goBtn.addEventListener("click", () => {
-  if(triggered) return;
-  triggered = true;
+function showClickStar(){
+  const s=document.createElement("div");
+  s.className="click-star";
+  const hint=document.createElement("div");
+  hint.className="hint-arrow";
+  hint.innerHTML="<span>👈</span> 點我";
+  card.appendChild(s); card.appendChild(hint);
 
+  s.addEventListener("click",()=>{
+    s.remove(); hint.remove();
+    vibrate(60);
+    textBurst();
+    startCountdown();
+
+    setTimeout(()=>{
+      secret.classList.add("show");
+      vibrate([80,40,80]);
+    },3800);
+  });
+}
+
+goBtn.addEventListener("click",()=>{
+  if(triggered) return;
+  triggered=true;
   starBurst();
   showClickStar();
-
-  bgmLoop.volume = 0.25;
-  bgmLoop.load();
+  bgmLoop.volume=.25;
   bgmLoop.play().catch(()=>{});
-
-  confetti.innerHTML = "";
-  for(let i=0;i<120;i++){
-    const p = document.createElement("div");
-    p.className = "piece";
-    p.style.left = Math.random()*100 + "vw";
-    p.style.background = ["#fdbb2d","#ff6b6b","#4dd4ff","#7cff9e"][i%4];
-    p.style.animationDelay = Math.random()*1.5 + "s";
-    confetti.appendChild(p);
-  }
 });
 </script>
 </body>
 </html>
-
