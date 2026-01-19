@@ -46,7 +46,7 @@ button{
   background:#fdbb2d;
 }
 
-/* ===== 隱藏祝福（淡入） ===== */
+/* ===== 祝福（淡入） ===== */
 .secret{
   margin-top:18px;
   padding:18px;
@@ -120,7 +120,7 @@ button{
   50%{ transform: translate(-50%,-50%) scale(1.15); }
 }
 
-/* ===== 箭頭提示 ===== */
+/* ===== 箭頭 ===== */
 .hint-arrow{
   position:absolute;
   left:calc(50% + 42px);
@@ -139,7 +139,7 @@ button{
   50%{ transform: translateY(-6px); }
 }
 
-/* ===== 生日字樣 ===== */
+/* ===== Happy Birthday 字樣 ===== */
 .burst-text{
   position:absolute;
   left:50%;
@@ -151,7 +151,7 @@ button{
   letter-spacing:.08em;
   pointer-events:none;
   text-shadow: 0 0 20px rgba(255,217,102,.8);
-  animation: text-burst 5s ease-out forwards;
+  animation: text-burst 3.8s ease-out forwards;
 }
 @keyframes text-burst{
   0%{ opacity:0; transform: translate(-50%,-50%) scale(0.6); }
@@ -167,7 +167,7 @@ button{
   <div class="confetti" id="confetti"></div>
 
   <h1>🎂 生日快樂</h1>
-  <p class="sub">一個小小的20歲生日祝福。<br>
+  <p class="sub">一個小小的20歲生日祝福。</p>
 
   <button id="go">開始 🎵</button>
 
@@ -177,6 +177,7 @@ button{
       雖然剛認識妳不久（開玩笑），<br>
       還是想祝妳生日快樂。<br>
       祝妳心想事成，也記得適時休息，<br>
+      工作別太累到自己 ʕ•̀ o • ʔ ，<br>
       希望妳今天能過得開心，<br>
       今年也順順利利。
     </p>
@@ -227,14 +228,13 @@ function showClickStar(){
     s.remove();
     hint.remove();
 
-    vibrate(60);          // 點星星震一下
+    vibrate(60);
     textBurst();
 
-    // 5 秒後顯示祝福 + 再震一次
     setTimeout(() => {
       secret.classList.add("show");
       vibrate([80,40,80]);
-    }, 4000);
+    }, 3800);
   });
 }
 
@@ -243,7 +243,7 @@ function textBurst(){
   t.className = "burst-text";
   t.textContent = "｡˚♡🧁 ʜᴀᴘᴘʏ ʙɪʀᴛʜᴅᴀʏ 🧁⋆22｡";
   card.appendChild(t);
-  setTimeout(()=>t.remove(),4000);
+  setTimeout(()=>t.remove(),3800);
 }
 
 goBtn.addEventListener("click", () => {
@@ -270,5 +270,3 @@ goBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
-
-
