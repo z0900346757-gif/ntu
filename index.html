@@ -134,15 +134,14 @@ button{
       希望妳今天能過得開心，<br>
       今年也順順利利。<br><br>
       P.S. 本來想放林俊傑的歌(只能亂唱其他ㄌ)，<br>
-      
       by Jie
     </p>
   </div>
 
-  <!-- 主音樂（輪播） -->
-  <audio id="bgmMain" preload="auto" playsinline></audio>
+  <!-- ✅ 主音樂：一開始就指定 src（關鍵修正） -->
+  <audio id="bgmMain" src="song1.wav" preload="auto" playsinline></audio>
 
-  <!-- 背景音樂（循環、小聲） -->
+  <!-- 背景音樂 -->
   <audio id="bgmLoop" src="bg.wav" preload="auto" loop playsinline></audio>
 </div>
 
@@ -155,6 +154,7 @@ const card = document.querySelector(".card");
 const bgmMain = document.getElementById("bgmMain");
 const bgmLoop = document.getElementById("bgmLoop");
 
+// GitHub Pages 相對路徑
 const BASE = window.location.pathname.replace(/\/[^\/]*$/, "/");
 
 const playlist = [
@@ -182,9 +182,9 @@ function starBurst(){
 function textBurst(){
   const t = document.createElement("div");
   t.className = "burst-text";
-  t.textContent = "｡˚♡🧁 ʜᴀᴘᴘʏ ʙɪʀᴛʜᴅᴀʏ ᴛᴏ ᴍᴇᴇᴇ 🧁⋆22｡˚";
+  t.textContent = "｡˚♡🧁 ʜᴀᴘᴘʏ ʙɪʀᴛʜᴅᴀʏ 🧁⋆｡˚";
   card.appendChild(t);
-  setTimeout(()=>t.remove(),3200);
+  setTimeout(()=>t.remove(),5000);
 }
 
 goBtn.addEventListener("click", () => {
@@ -195,13 +195,13 @@ goBtn.addEventListener("click", () => {
   textBurst();
   secret.classList.add("show");
 
-  // 🎶 背景音樂（小聲、循環）
+  // 背景音樂
   bgmLoop.volume = 0.25;
   bgmLoop.play().catch(()=>{});
 
-  // 🎵 主音樂
+  // 主音樂
   bgmMain.src = playlist[current];
-  bgmMain.volume = 0.45;
+  bgmMain.volume = 0.15;
   bgmMain.load();
   bgmMain.play().catch(()=>{});
 
@@ -227,6 +227,3 @@ bgmMain.addEventListener("ended", () => {
 </script>
 </body>
 </html>
-
-
-
