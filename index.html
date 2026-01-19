@@ -93,14 +93,14 @@ button{
   }
 }
 
-/* ===== 可點擊星星 ===== */
+/* ===== 可點擊星星（⭐放大一點） ===== */
 .click-star{
   position:absolute;
   left:50%;
   top:45%;
   transform: translate(-50%,-50%);
-  width:42px;
-  height:42px;
+  width:56px;              /* ← 原本 42px，放大 */
+  height:56px;
   background:gold;
   clip-path: polygon(
     50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,
@@ -108,11 +108,34 @@ button{
   );
   cursor:pointer;
   animation: star-pulse 1.6s ease-in-out infinite;
-  box-shadow: 0 0 20px rgba(255,215,0,.8);
+  box-shadow: 0 0 25px rgba(255,215,0,.9);
 }
 @keyframes star-pulse{
   0%,100%{ transform: translate(-50%,-50%) scale(1); }
   50%{ transform: translate(-50%,-50%) scale(1.15); }
+}
+
+/* ===== 箭頭提示 ===== */
+.hint-arrow{
+  position:absolute;
+  left:calc(50% + 40px);
+  top:45%;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:14px;
+  opacity:.9;
+  animation: arrow-bounce 1.2s ease-in-out infinite;
+  pointer-events:none;
+}
+
+.hint-arrow span{
+  font-size:20px;
+}
+
+@keyframes arrow-bounce{
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(-6px); }
 }
 
 /* ===== 生日快樂文字 ===== */
@@ -147,21 +170,20 @@ button{
 
   <button id="go">開始 🎵</button>
 
-<div class="secret" id="secret">
-  <h2>🎉 怡靜，20歲生日快樂!!</h2>
-  <p>
-    雖然剛認識妳不久（開玩笑），<br>
-    還是想祝妳生日快樂。<br>
-    祝妳心想事成，也記得適時休息，<br>
-    希望妳今天能過得開心，<br>
-    今年也順順利利。
-  </p>
-  <p style="text-align:right; margin-top:10px;">
-    by jie
-  </p>
-</div>
+  <div class="secret" id="secret">
+    <h2>🎉 怡靜，20歲生日快樂!!</h2>
+    <p>
+      雖然剛認識妳不久（開玩笑），<br>
+      還是想祝妳生日快樂。<br>
+      祝妳心想事成，也記得適時休息，<br>
+      希望妳今天能過得開心，<br>
+      今年也順順利利。
+    </p>
+    <p style="text-align:right; margin-top:10px;">
+      by jie
+    </p>
+  </div>
 
-  <!-- 🎶 只剩背景音樂 -->
   <audio id="bgmLoop" src="bg.wav" preload="auto" loop playsinline></audio>
 </div>
 
@@ -190,10 +212,17 @@ function starBurst(){
 function showClickStar(){
   const s = document.createElement("div");
   s.className = "click-star";
+
+  const hint = document.createElement("div");
+  hint.className = "hint-arrow";
+  hint.innerHTML = "<span>👉</span> 點我";
+
   card.appendChild(s);
+  card.appendChild(hint);
 
   s.addEventListener("click", () => {
     s.remove();
+    hint.remove();
     textBurst();
   });
 }
@@ -214,11 +243,9 @@ goBtn.addEventListener("click", () => {
   showClickStar();
   secret.classList.add("show");
 
-  // 背景音樂
   bgmLoop.volume = 0.25;
   bgmLoop.play().catch(()=>{});
 
-  // 彩帶
   confetti.innerHTML = "";
   for(let i=0;i<120;i++){
     const p = document.createElement("div");
@@ -232,4 +259,3 @@ goBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
-
