@@ -6,10 +6,7 @@
 <title>怡靜 20歲生日快樂 🎉</title>
 
 <style>
-:root { 
-  --bg1: #0b1020; --bg2: #1a2a6c; --gold: #fdbb2d;
-}
-
+:root { --bg1: #0b1020; --bg2: #1a2a6c; --gold: #fdbb2d; }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
@@ -21,11 +18,7 @@ body {
   animation: gradientMove 15s ease infinite;
 }
 
-@keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+@keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
 .card {
   width: min(92vw, 500px); padding: 40px 25px; border-radius: 30px;
@@ -33,52 +26,41 @@ body {
   backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-  position: relative; text-align: center; min-height: 300px;
+  position: relative; text-align: center; min-height: 320px;
   display: flex; flex-direction: column; justify-content: center;
 }
 
-/* 標題與副標題 */
 #main-header h1 { margin: 0 0 10px; font-size: clamp(28px, 6vw, 42px); }
-#main-header p { margin: 0 0 30px; opacity: 0.8; font-size: 15px; }
+#main-header p { margin: 0 0 30px; opacity: 0.8; }
 
-/* 按鈕 */
 #go {
   padding: 16px 40px; border-radius: 50px; border: 0; cursor: pointer;
   font-weight: 800; font-size: 18px; color: #332200;
   background: linear-gradient(45deg, var(--gold), #ff8e53);
-  box-shadow: 0 10px 20px rgba(253, 187, 45, 0.3);
   align-self: center;
 }
 
-/* 星星 */
 .click-star {
   width: 80px; height: 80px; background: var(--gold); margin: 20px auto;
   clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
   cursor: pointer; animation: star-pulse 1.5s infinite;
-  filter: drop-shadow(0 0 15px var(--gold));
 }
 @keyframes star-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-/* 倒數 */
-.countdown {
-  font-size: clamp(40px, 10vw, 60px); font-weight: 900;
-  text-shadow: 0 0 20px var(--gold); animation: pop 0.5s ease;
-}
+.countdown { font-size: 50px; font-weight: 900; text-shadow: 0 0 20px var(--gold); animation: pop 0.5s ease; }
 @keyframes pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-/* 爆發文字 */
-.burst-text {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 100%; font-size: 26px; font-weight: bold; color: var(--gold);
-  text-shadow: 0 0 15px rgba(255,217,102,0.8); pointer-events: none;
-}
+.burst-text { font-size: 26px; font-weight: bold; color: var(--gold); margin-bottom: 20px; text-shadow: 0 0 15px rgba(253, 187, 45, 0.5); }
 
-/* 祝福區塊 */
-.secret {
-  display: none; padding: 10px; line-height: 1.8; text-align: left;
-}
-.secret h2 { color: var(--gold); margin-top: 0; font-size: 22px; }
-#signature { text-align: right; margin-top: 15px; font-weight: bold; color: var(--gold); opacity: 0; }
+.wish-area { animation: fadeIn 1.2s ease forwards; }
+.cake { font-size: 80px; cursor: pointer; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); transition: transform 0.3s; margin: 15px 0; }
+.cake:hover { transform: scale(1.1); }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.secret { display: none; padding: 10px; line-height: 1.8; text-align: left; }
+.secret h2 { color: var(--gold); margin-top: 0; font-size: 24px; }
+#signature { text-align: right; margin-top: 15px; font-weight: bold; color: var(--gold); }
 </style>
 </head>
 
@@ -105,7 +87,6 @@ body {
 <script>
 const goBtn = document.getElementById("go");
 const contentWrap = document.getElementById("content-wrap");
-const mainHeader = document.getElementById("main-header");
 const secret = document.getElementById("secret");
 const bgmLoop = document.getElementById("bgmLoop");
 
@@ -113,14 +94,11 @@ function vibrate(p) { if(navigator.vibrate) navigator.vibrate(p); }
 
 function fireConfetti() {
   const colors = ['#fdbb2d', '#ff8e53', '#22c1c3', '#ffffff'];
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 40; i++) {
     const p = document.createElement('div');
     p.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-10px; width:8px; height:12px; background:${colors[Math.floor(Math.random()*colors.length)]}; z-index:100; opacity:${Math.random()}; transform:rotate(${Math.random()*360}deg); pointer-events:none; transition:transform 3s linear, opacity 3s;`;
     document.body.appendChild(p);
-    setTimeout(() => {
-      p.style.transform = `translate(${Math.random()*100-50}px, 105vh) rotate(${Math.random()*1000}deg)`;
-      p.style.opacity = '0';
-    }, 100);
+    setTimeout(() => { p.style.transform = `translate(${Math.random()*100-50}px, 105vh) rotate(${Math.random()*1000}deg)`; p.style.opacity = '0'; }, 100);
     setTimeout(() => p.remove(), 4000);
   }
 }
@@ -132,12 +110,40 @@ async function typewriter(element, text, speed = 60) {
   }
 }
 
-// 倒數與最後驚喜
+// 許願環節：這裡會接手畫面
+function startWishing() {
+  // 徹底覆寫 contentWrap，確保倒數的文字（20歲快樂）消失
+  contentWrap.innerHTML = `
+    <div class="wish-area">
+      <div class="burst-text">｡˚♡🧁 HAPPY BIRTHDAY 🧁⋆20｡</div>
+      <p style="margin-bottom:5px; font-size: 18px;">許下三個願望...</p>
+      <div class="cake" id="cake" title="點擊吹熄蠟燭">🎂</div>
+      <p style="font-size:13px; opacity:0.6;">(許完願後，點擊蛋糕吹熄蠟燭)</p>
+    </div>
+  `;
+  
+  document.getElementById('cake').addEventListener('click', function() {
+    this.innerHTML = "🍰"; 
+    vibrate(100);
+    setTimeout(showFinalSecret, 800);
+  });
+}
+
+async function showFinalSecret() {
+  contentWrap.style.display = "none";
+  secret.style.display = "block";
+  await typewriter(document.getElementById('type-title'), "🎉 怡靜，20歲生日快樂!!");
+  await typewriter(document.getElementById('type-content'), 
+    "雖然剛認識妳不久（開玩笑），\n還是想祝妳生日快樂ꉂ೭(˵¯̴͒ꇴ¯̴͒˵) ”。\n祝妳心想事成，也記得適時休息，\n工作別太累到自己 ʕ•̀ o •́ ʔ，\n今天妳是最幸福的人，\n祝妳今年也順順利利。");
+  const sig = document.getElementById('signature');
+  await typewriter(sig, "— by jie");
+}
+
 function startSequence() {
   const words = ["準備…", "來了…", "20 歲快樂！"];
   let i = 0;
   
-  contentWrap.innerHTML = ""; // 這裡徹底清空卡片內容 (包括標題和副標)
+  contentWrap.innerHTML = ""; // 點完星星立刻清空
 
   const cd = document.createElement("div");
   cd.className = "countdown";
@@ -150,48 +156,23 @@ function startSequence() {
       i++;
     } else {
       clearInterval(timer);
-      
-      // 顯示 Happy Birthday 噴發文字
-      const bt = document.createElement("div");
-      bt.className = "burst-text";
-      bt.innerHTML = "｡˚♡🧁 HAPPY BIRTHDAY 🧁⋆20｡";
-      contentWrap.appendChild(bt);
-      
+      // 倒數結束的一瞬間，立刻清空 contentWrap，避免倒數文字殘留
+      contentWrap.innerHTML = ""; 
       fireConfetti();
-      vibrate([100, 50, 200]);
-
-      // 結束倒數，切換到祝福文字
-      setTimeout(async () => {
-        contentWrap.style.display = "none";
-        secret.style.display = "block";
-        
-        await typewriter(document.getElementById('type-title'), "🎉 怡靜，20歲生日快樂!!");
-        await typewriter(document.getElementById('type-content'), 
-          "雖然剛認識妳不久（開玩笑），\n還是想祝妳生日快樂ꉂ೭(˵¯̴͒ꇴ¯̴͒˵) ”。\n祝妳心想事成，也記得適時休息，\n工作別太累到自己 ʕ•̀ o •́ ʔ，\n今天妳是最幸福的人，\n祝妳今年也順順利利。");
-        
-        const sig = document.getElementById('signature');
-        sig.style.opacity = "1";
-        await typewriter(sig, "— by jie");
-      }, 2500);
+      startWishing(); 
     }
   }, 1200);
 }
 
-// 第一步：點擊開始
 goBtn.addEventListener("click", () => {
   goBtn.style.display = "none";
   bgmLoop.volume = 0.3;
   bgmLoop.play().catch(() => {});
-
-  // 出現星星
   const star = document.createElement("div");
   star.className = "click-star";
   contentWrap.appendChild(star);
-
-  // 點擊星星後
   star.addEventListener("click", () => {
-    // 關鍵：點完星星立刻清空 contentWrap，這會移除標題、副標和星星本人
-    startSequence();
+    startSequence(); 
   });
 });
 </script>
