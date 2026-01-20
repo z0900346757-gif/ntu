@@ -2,216 +2,162 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>生日快樂 🎉</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>怡靜 20歲生日快樂 🎉</title>
 
 <style>
-:root { --bg1:#0b1020; --bg2:#1a2a6c; }
-*{box-sizing:border-box}
+:root { 
+  --bg1: #0b1020; 
+  --bg2: #1a2a6c; 
+  --gold: #fdbb2d;
+  --text-primary: #ffffff;
+}
 
-body{
-  margin:0;
-  min-height:100vh;
-  display:grid;
-  place-items:center;
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
   font-family: system-ui, -apple-system, "Noto Sans TC", "PingFang TC", sans-serif;
-  color:#fff;
-  overflow:hidden;
-  background:
-    radial-gradient(1200px 600px at 20% 20%, rgba(253,187,45,.35), transparent 60%),
-    linear-gradient(135deg, var(--bg1), var(--bg2));
+  color: var(--text-primary);
+  overflow: hidden;
+  /* 動態流動背景 */
+  background: linear-gradient(-45deg, #0b1020, #1a2a6c, #2b1055, #192236);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
 }
 
-.card{
-  width:min(92vw, 760px);
-  padding:28px 22px;
-  border-radius:24px;
-  background: rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.18);
-  box-shadow: 0 20px 60px rgba(0,0,0,.35);
-  position:relative;
-  overflow:hidden;
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-h1{ margin:0 0 10px; font-size: clamp(34px, 5vw, 56px); }
-.sub{ margin:0 0 18px; opacity:.9; line-height:1.7; }
-
-button{
-  padding:14px 18px;
-  border-radius:14px;
-  border:0;
-  cursor:pointer;
-  font-weight:700;
-  font-size:16px;
-  background:#fdbb2d;
+.card {
+  width: min(92vw, 500px);
+  padding: 35px 25px;
+  border-radius: 30px;
+  /* 毛玻璃質感 */
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  transition: all 0.5s ease;
 }
 
-/* ===== 祝福（淡入） ===== */
-.secret{
-  margin-top:18px;
-  padding:18px;
-  border-radius:18px;
-  background: rgba(0,0,0,.25);
-  line-height:1.7;
-  opacity:0;
-  transform: translateY(10px);
-  transition: opacity .8s ease, transform .8s ease;
-}
-.secret.show{
-  opacity:1;
-  transform: translateY(0);
+h1 { margin: 0 0 10px; font-size: clamp(28px, 6vw, 42px); letter-spacing: 2px; }
+.sub { margin: 0 0 25px; opacity: 0.8; font-size: 15px; line-height: 1.6; }
+
+#go {
+  padding: 16px 35px;
+  border-radius: 50px;
+  border: 0;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 18px;
+  color: #332200;
+  background: linear-gradient(45deg, var(--gold), #ff8e53);
+  box-shadow: 0 10px 20px rgba(253, 187, 45, 0.3);
+  transition: transform 0.2s, opacity 0.5s;
 }
 
-/* ===== 彩帶 ===== */
-.confetti{ position:absolute; inset:-10vh -10vw; pointer-events:none; }
-.piece{
-  position:absolute;
-  width:10px;
-  height:16px;
-  top:-20px;
-  animation: fall 3.5s linear infinite;
-}
-@keyframes fall{
-  to{ transform: translateY(120vh) rotate(720deg); }
+#go:active { transform: scale(0.92); }
+
+/* ===== 祝福內容 (打字機效果區) ===== */
+.secret {
+  display: none;
+  margin-top: 20px;
+  padding: 22px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  line-height: 1.8;
+  text-align: left;
 }
 
-/* ===== 星星爆炸 ===== */
-.star{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:10px;
-  height:10px;
-  background:gold;
-  clip-path: polygon(
-    50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,
-    50% 70%,21% 91%,32% 57%,2% 35%,39% 35%
-  );
-  pointer-events:none;
-  animation: star-burst 1.2s ease-out forwards;
-}
-@keyframes star-burst{
-  from{ transform: translate(-50%,-50%) scale(0.3); opacity:1; }
-  to{
-    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.2);
-    opacity:0;
-  }
-}
+.secret h2 { color: var(--gold); margin-top: 0; font-size: 22px; }
 
-/* ===== 可點擊星星 ===== */
-.click-star{
-  position:absolute;
-  left:50%;
-  top:45%;
-  transform: translate(-50%,-50%);
-  width:64px;
-  height:64px;
-  background:gold;
-  clip-path: polygon(
-    50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,
-    50% 70%,21% 91%,32% 57%,2% 35%,39% 35%
-  );
-  cursor:pointer;
+/* ===== 互動元素：星星 ===== */
+.click-star {
+  position: relative;
+  margin: 40px auto;
+  width: 75px;
+  height: 75px;
+  background: var(--gold);
+  clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  cursor: pointer;
   animation: star-pulse 1.6s ease-in-out infinite;
-  box-shadow: 0 0 25px rgba(255,215,0,.9);
-}
-@keyframes star-pulse{
-  0%,100%{ transform: translate(-50%,-50%) scale(1); }
-  50%{ transform: translate(-50%,-50%) scale(1.15); }
+  filter: drop-shadow(0 0 15px rgba(253,187,45,0.8));
 }
 
-/* ===== 箭頭提示 ===== */
-.hint-arrow{
-  position:absolute;
-  left:calc(50% + 44px);
-  top:45%;
-  display:flex;
-  align-items:center;
-  gap:6px;
-  font-size:14px;
-  opacity:.9;
-  animation: arrow-bounce 1.2s ease-in-out infinite;
-  pointer-events:none;
-}
-.hint-arrow span{ font-size:20px; }
-@keyframes arrow-bounce{
-  0%,100%{ transform: translateY(0); }
-  50%{ transform: translateY(-6px); }
+@keyframes star-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
 }
 
-/* ===== 倒數（高對比版） ===== */
-.countdown{
-  position:absolute;
-  left:50%;
-  top:calc(45% + 80px);
-  transform: translateX(-50%);
-  font-size: clamp(34px, 9vw, 56px);
-  font-weight:900;
-  letter-spacing:.15em;
-  color:#ffffff;
-  text-shadow:
-    0 0 10px rgba(150,200,255,.9),
-    0 0 22px rgba(120,180,255,.8),
-    0 0 40px rgba(80,140,255,.6);
-  opacity:0;
-  animation: countdown-pop .45s ease forwards;
+.hint-arrow {
+  font-size: 14px;
+  color: var(--gold);
+  margin-top: -10px;
+  animation: bounce 1s infinite;
 }
 
-@keyframes countdown-pop{
-  from{
-    opacity:0;
-    transform: translateX(-50%) scale(.6);
-  }
-  to{
-    opacity:1;
-    transform: translateX(-50%) scale(1);
-  }
+@keyframes bounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-5px); } }
+
+/* ===== 倒數與噴發文字 ===== */
+.countdown {
+  position: absolute;
+  left: 50%; top: 55%;
+  transform: translate(-50%, -50%);
+  font-size: 60px; font-weight: 900;
+  text-shadow: 0 0 20px var(--gold);
+  animation: pop 0.5s ease;
 }
 
-/* ===== Happy Birthday ===== */
-.burst-text{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform: translate(-50%,-50%);
-  font-size: clamp(26px, 6vw, 44px);
-  font-weight:800;
-  color:#ffd966;
-  letter-spacing:.08em;
-  pointer-events:none;
-  text-shadow: 0 0 20px rgba(255,217,102,.8);
-  animation: text-burst 3.8s ease-out forwards;
+@keyframes pop { from { scale: 0.5; opacity: 0; } to { scale: 1; opacity: 1; } }
+
+.burst-text {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  font-size: 24px; font-weight: bold;
+  color: var(--gold);
+  text-shadow: 0 0 15px rgba(255,217,102,0.8);
+  animation: text-burst 3.5s forwards;
+  pointer-events: none;
 }
-@keyframes text-burst{
-  0%{ opacity:0; transform: translate(-50%,-50%) scale(0.6); }
-  15%{ opacity:1; transform: translate(-50%,-50%) scale(1.2); }
-  70%{ opacity:1; transform: translate(-50%,-50%) scale(1.1); }
-  100%{ opacity:0; transform: translate(-50%,-80%) scale(1.1); }
+
+@keyframes text-burst {
+  0% { opacity: 0; scale: 0.5; }
+  20% { opacity: 1; scale: 1.1; }
+  80% { opacity: 1; scale: 1; }
+  100% { opacity: 0; transform: translate(-50%, -100%); }
 }
 </style>
 </head>
 
 <body>
 <div class="card">
-  <div class="confetti" id="confetti"></div>
+  <div id="header-area">
+    <h1>🎂 生日快樂</h1>
+    <p class="sub">這是一份專屬於妳的 20 歲數位驚喜</p>
+  </div>
 
-  <h1>🎂 生日快樂</h1>
-  <p class="sub">一個小小的20歲生日祝福。</p>
+  <button id="go">開啟祝福 🎵</button>
 
-  <button id="go">開始 🎵</button>
+  <div id="interactive-content"></div>
 
   <div class="secret" id="secret">
-   <h2>🎉 怡靜，20歲生日快樂!!</h2>
-<p style="font-size: 0.9em; opacity: 0.7;">2026 / 01 / 20</p>
-    <p>
-      雖然剛認識妳不久（開玩笑），<br>
-      還是想祝妳生日快樂ꉂ೭(˵¯̴͒ꇴ¯̴͒˵) ”。<br>
-      祝妳心想事成，也記得適時休息，<br>
-      工作別太累到自己 ʕ•̀ o •́ ʔ，<br>
-      今天妳是最幸福、最幸運的人，<br>
-      祝妳今年也順順利利。
-    </p>
-    <p style="text-align:right; margin-top:10px;">by jie</p>
+    <h2 id="type-title"></h2>
+    <p style="font-size: 0.85em; opacity: 0.6; margin-bottom: 10px;">2026 / 01 / 20</p>
+    <div id="type-content"></div>
+    <p id="signature" style="text-align:right; margin-top:15px; font-weight:bold; color:var(--gold); opacity:0;"></p>
   </div>
 
   <audio id="bgmLoop" src="bg.wav" preload="auto" loop playsinline></audio>
@@ -220,89 +166,115 @@ button{
 <script>
 const goBtn = document.getElementById("go");
 const secret = document.getElementById("secret");
-const confetti = document.getElementById("confetti");
+const interactiveArea = document.getElementById("interactive-content");
 const card = document.querySelector(".card");
 const bgmLoop = document.getElementById("bgmLoop");
 
 let triggered = false;
 
-function vibrate(p){ if(navigator.vibrate) navigator.vibrate(p); }
+function vibrate(p) { if(navigator.vibrate) navigator.vibrate(p); }
 
-function starBurst(){
-  for(let i=0;i<20;i++){
-    const star=document.createElement("div");
-    star.className="star";
-    const a=Math.random()*Math.PI*2;
-    const d=60+Math.random()*120;
-    star.style.setProperty("--x",Math.cos(a)*d+"px");
-    star.style.setProperty("--y",Math.sin(a)*d+"px");
-    card.appendChild(star);
-    setTimeout(()=>star.remove(),1300);
+// 1. 紙屑噴發特效
+function fireConfetti() {
+  const colors = ['#fdbb2d', '#ff8e53', '#22c1c3', '#ffffff', '#ffedbc'];
+  for (let i = 0; i < 60; i++) {
+    const p = document.createElement('div');
+    p.style.cssText = `
+      position: fixed; left: ${Math.random() * 100}vw; top: -10px;
+      width: ${Math.random() * 8 + 5}px; height: ${Math.random() * 12 + 5}px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      z-index: 100; opacity: ${Math.random()};
+      transform: rotate(${Math.random() * 360}deg);
+      pointer-events: none; transition: transform 3s linear, opacity 3s;
+    `;
+    document.body.appendChild(p);
+    setTimeout(() => {
+      p.style.transform = `translate(${Math.random() * 100 - 50}px, 105vh) rotate(${Math.random() * 1000}deg)`;
+      p.style.opacity = '0';
+    }, 100);
+    setTimeout(() => p.remove(), 4000);
   }
 }
 
-function startCountdown(){
-  const words=["準備…","來了…","現在！"];
-  let i=0;
-  const cd=document.createElement("div");
-  cd.className="countdown";
-  card.appendChild(cd);
-  cd.textContent=words[i];
-  vibrate(20);
+// 2. 打字機效果
+async function typewriter(element, text, speed = 80) {
+  for (let char of text) {
+    element.innerHTML += char === '\n' ? '<br>' : char;
+    await new Promise(r => setTimeout(r, speed));
+  }
+}
 
-  const timer=setInterval(()=>{
-    i++;
-    if(i<words.length){
-      cd.textContent=words[i];
-      cd.style.animation="none";
-      cd.offsetHeight;
-      cd.style.animation="countdown-pop .45s ease forwards";
-      vibrate(30);
-    }else{
+// 3. 核心倒數與文字爆發
+function triggerFinalSurprise() {
+  const words = ["準備…", "來了…", "20歲快樂！"];
+  let i = 0;
+  const cd = document.createElement("div");
+  cd.className = "countdown";
+  interactiveArea.appendChild(cd);
+
+  const timer = setInterval(async () => {
+    if (i < words.length) {
+      cd.textContent = words[i];
+      vibrate(40);
+      i++;
+    } else {
       clearInterval(timer);
       cd.remove();
+      
+      // 顯示祝福區
+      secret.style.display = 'block';
+      fireConfetti();
+      vibrate([100, 50, 200]);
+
+      // 開始打字
+      await typewriter(document.getElementById('type-title'), "🎉 怡靜，20歲生日快樂!!");
+      await typewriter(document.getElementById('type-content'), 
+        "雖然剛認識妳不久（開玩笑），\n還是想祝妳生日快樂ꉂ೭(˵¯̴͒ꇴ¯̴͒˵) ”。\n祝妳心想事成，也記得適時休息，\n工作別太累到自己 ʕ•̀ o •́ ʔ，\n今天妳是最幸福、最幸運的人，\n祝妳今年也順順利利。");
+      
+      const sig = document.getElementById('signature');
+      sig.textContent = "— by jie";
+      sig.style.opacity = "1";
     }
-  },1300);
+  }, 1200);
 }
 
-function textBurst(){
-  const t=document.createElement("div");
-  t.className="burst-text";
-  t.textContent="｡˚♡🧁 ʜᴀᴘᴘʏ ʙɪʀᴛʜᴅᴀʏ 🧁⋆20｡";
-  card.appendChild(t);
-  setTimeout(()=>t.remove(),3800);
-}
+// 4. 第一步：開始按鈕
+goBtn.addEventListener("click", () => {
+  if (triggered) return;
+  triggered = true;
+  
+  // 按鈕消失
+  goBtn.style.opacity = '0';
+  setTimeout(() => goBtn.style.display = 'none', 500);
 
-function showClickStar(){
-  const s=document.createElement("div");
-  s.className="click-star";
-  const hint=document.createElement("div");
-  hint.className="hint-arrow";
-  hint.innerHTML="<span>👈</span> 點我";
-  card.appendChild(s); card.appendChild(hint);
+  // 音樂播放
+  bgmLoop.volume = 0.3;
+  bgmLoop.play().catch(() => { console.log("音樂播放受阻，需使用者手動觸發"); });
 
-  s.addEventListener("click",()=>{
-    s.remove(); hint.remove();
+  // 顯示星星
+  const star = document.createElement("div");
+  star.className = "click-star";
+  const hint = document.createElement("div");
+  hint.className = "hint-arrow";
+  hint.innerHTML = "點擊這顆星星 <span>✨</span>";
+  
+  interactiveArea.appendChild(star);
+  interactiveArea.appendChild(hint);
+
+  star.addEventListener("click", () => {
+    star.remove();
+    hint.remove();
     vibrate(60);
-    textBurst();
-    startCountdown();
-    setTimeout(()=>{
-      secret.classList.add("show");
-      vibrate([80,40,80]);
-    },3800);
+    
+    // 噴發Happy Birthday文字
+    const bt = document.createElement("div");
+    bt.className = "burst-text";
+    bt.textContent = "｡˚♡🧁 HAPPPY BIRTHDAY 🧁⋆20｡";
+    interactiveArea.appendChild(bt);
+    
+    setTimeout(triggerFinalSurprise, 1500);
   });
-}
-
-goBtn.addEventListener("click",()=>{
-  if(triggered) return;
-  triggered=true;
-  starBurst();
-  showClickStar();
-  bgmLoop.volume=.28;
-  bgmLoop.play().catch(()=>{});
 });
 </script>
 </body>
 </html>
-
-
