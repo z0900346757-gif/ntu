@@ -52,11 +52,29 @@ body {
 
 .burst-text { font-size: 26px; font-weight: bold; color: var(--gold); margin-bottom: 20px; text-shadow: 0 0 15px rgba(253, 187, 45, 0.5); }
 
-.wish-area { animation: fadeIn 1.2s ease forwards; }
-.cake { font-size: 80px; cursor: pointer; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); transition: transform 0.3s; margin: 15px 0; }
-.cake:hover { transform: scale(1.1); }
+/* 蛋糕與吃掉動畫 */
+.cake-container { font-size: 80px; cursor: pointer; transition: 0.3s; margin: 15px 0; position: relative; }
+.cake-container.eat-anim { animation: eat-sequence 1.2s ease forwards; }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes eat-sequence {
+  0% { transform: scale(1); }
+  20% { transform: scale(1.2); } /* 咬一口前的放大 */
+  40% { transform: scale(0.5); opacity: 0.5; } /* 縮小 */
+  60% { transform: scale(0); opacity: 0; } /* 消失 */
+  100% { transform: scale(0); opacity: 0; }
+}
+
+#yummy-face {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+  font-size: 60px; opacity: 0; pointer-events: none;
+}
+.show-yummy { animation: yummy-pop 1s ease forwards 0.6s; } /* 在蛋糕消失後出現 */
+
+@keyframes yummy-pop {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+  100% { transform: translate(-50%, -80%) scale(1); opacity: 0; }
+}
 
 .secret { display: none; padding: 10px; line-height: 1.8; text-align: left; }
 .secret h2 { color: var(--gold); margin-top: 0; font-size: 24px; }
@@ -110,23 +128,39 @@ async function typewriter(element, text, speed = 60) {
   }
 }
 
-// 許願環節：這裡會接手畫面
+// 許願環節
 function startWishing() {
-  // 徹底覆寫 contentWrap，確保倒數的文字（20歲快樂）消失
   contentWrap.innerHTML = `
-    <div class="wish-area">
+    <div style="animation: fadeIn 1s ease;">
       <div class="burst-text">｡˚♡🧁 HAPPY BIRTHDAY 🧁⋆20｡</div>
       <p style="margin-bottom:5px; font-size: 18px;">許下三個願望...</p>
-      <div class="cake" id="cake" title="點擊吹熄蠟燭">🎂</div>
-      <p style="font-size:13px; opacity:0.6;">(許完願後，點擊蛋糕吹熄蠟燭)</p>
+      <div class="cake-container" id="cake-box">
+        <span id="cake-emoji">🎂</span>
+        <div id="yummy-face">😋</div>
+      </div>
+      <p style="font-size:13px; opacity:0.6;">(許完願後，點擊蛋糕吃掉它！)</p>
     </div>
   `;
   
-  document.getElementById('cake').addEventListener('click', function() {
-    this.innerHTML = "🍰"; 
-    vibrate(100);
-    setTimeout(showFinalSecret, 800);
-  });
+  const cakeBox = document.getElementById('cake-box');
+  const cakeEmoji = document.getElementById('cake-emoji');
+  const yummyFace = document.getElementById('yummy-face');
+
+  cakeBox.addEventListener('click', function() {
+    // 1. 變切片
+    cakeEmoji.innerHTML = "🍰"; 
+    vibrate(60);
+
+    // 2. 啟動吃掉動畫
+    setTimeout(() => {
+      cakeBox.classList.add('eat-anim');
+      yummyFace.classList.add('show-yummy');
+      vibrate([50, 30, 50]);
+    }, 400);
+
+    // 3. 動畫結束後進入祝福
+    setTimeout(showFinalSecret, 1800);
+  }, { once: true }); // 確保只能點一次
 }
 
 async function showFinalSecret() {
@@ -142,8 +176,7 @@ async function showFinalSecret() {
 function startSequence() {
   const words = ["準備…", "來了…", "20 歲快樂！"];
   let i = 0;
-  
-  contentWrap.innerHTML = ""; // 點完星星立刻清空
+  contentWrap.innerHTML = ""; 
 
   const cd = document.createElement("div");
   cd.className = "countdown";
@@ -156,7 +189,6 @@ function startSequence() {
       i++;
     } else {
       clearInterval(timer);
-      // 倒數結束的一瞬間，立刻清空 contentWrap，避免倒數文字殘留
       contentWrap.innerHTML = ""; 
       fireConfetti();
       startWishing(); 
