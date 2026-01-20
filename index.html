@@ -20,10 +20,9 @@ body {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  font-family: system-ui, -apple-system, "Noto Sans TC", "PingFang TC", sans-serif;
+  font-family: system-ui, -apple-system, "Noto Sans TC", sans-serif;
   color: var(--text-primary);
   overflow: hidden;
-  /* 動態流動背景 */
   background: linear-gradient(-45deg, #0b1020, #1a2a6c, #2b1055, #192236);
   background-size: 400% 400%;
   animation: gradientMove 15s ease infinite;
@@ -37,25 +36,22 @@ body {
 
 .card {
   width: min(92vw, 500px);
-  padding: 35px 25px;
+  padding: 40px 25px;
   border-radius: 30px;
-  /* 毛玻璃質感 */
   background: rgba(255, 255, 255, 0.07);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 25px 50px rgba(0,0,0,0.4);
   position: relative;
-  overflow: hidden;
   text-align: center;
-  transition: all 0.5s ease;
 }
 
 h1 { margin: 0 0 10px; font-size: clamp(28px, 6vw, 42px); letter-spacing: 2px; }
-.sub { margin: 0 0 25px; opacity: 0.8; font-size: 15px; line-height: 1.6; }
+.sub { margin: 0 0 30px; opacity: 0.8; font-size: 15px; }
 
 #go {
-  padding: 16px 35px;
+  padding: 16px 40px;
   border-radius: 50px;
   border: 0;
   cursor: pointer;
@@ -64,12 +60,9 @@ h1 { margin: 0 0 10px; font-size: clamp(28px, 6vw, 42px); letter-spacing: 2px; }
   color: #332200;
   background: linear-gradient(45deg, var(--gold), #ff8e53);
   box-shadow: 0 10px 20px rgba(253, 187, 45, 0.3);
-  transition: transform 0.2s, opacity 0.5s;
+  transition: all 0.4s ease;
 }
 
-#go:active { transform: scale(0.92); }
-
-/* ===== 祝福內容 (打字機效果區) ===== */
 .secret {
   display: none;
   margin-top: 20px;
@@ -82,17 +75,16 @@ h1 { margin: 0 0 10px; font-size: clamp(28px, 6vw, 42px); letter-spacing: 2px; }
 
 .secret h2 { color: var(--gold); margin-top: 0; font-size: 22px; }
 
-/* ===== 互動元素：星星 ===== */
+/* 星星樣式 */
 .click-star {
-  position: relative;
-  margin: 40px auto;
-  width: 75px;
-  height: 75px;
+  width: 80px;
+  height: 80px;
   background: var(--gold);
+  margin: 20px auto;
   clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
   cursor: pointer;
-  animation: star-pulse 1.6s ease-in-out infinite;
-  filter: drop-shadow(0 0 15px rgba(253,187,45,0.8));
+  animation: star-pulse 1.5s infinite;
+  filter: drop-shadow(0 0 15px var(--gold));
 }
 
 @keyframes star-pulse {
@@ -100,64 +92,48 @@ h1 { margin: 0 0 10px; font-size: clamp(28px, 6vw, 42px); letter-spacing: 2px; }
   50% { transform: scale(1.15); }
 }
 
-.hint-arrow {
-  font-size: 14px;
-  color: var(--gold);
-  margin-top: -10px;
-  animation: bounce 1s infinite;
-}
+.hint-text { color: var(--gold); font-size: 14px; margin-bottom: 20px; animation: fadeIn 1s; }
 
-@keyframes bounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-5px); } }
-
-/* ===== 倒數與噴發文字 ===== */
+/* 倒數大數字 */
 .countdown {
-  position: absolute;
-  left: 50%; top: 55%;
-  transform: translate(-50%, -50%);
-  font-size: 60px; font-weight: 900;
+  font-size: 55px;
+  font-weight: 900;
+  color: #fff;
   text-shadow: 0 0 20px var(--gold);
-  animation: pop 0.5s ease;
+  margin: 20px 0;
 }
 
-@keyframes pop { from { scale: 0.5; opacity: 0; } to { scale: 1; opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+/* 爆發文字 */
 .burst-text {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  font-size: 24px; font-weight: bold;
+  font-size: 26px;
+  font-weight: bold;
   color: var(--gold);
   text-shadow: 0 0 15px rgba(255,217,102,0.8);
-  animation: text-burst 3.5s forwards;
   pointer-events: none;
-}
-
-@keyframes text-burst {
-  0% { opacity: 0; scale: 0.5; }
-  20% { opacity: 1; scale: 1.1; }
-  80% { opacity: 1; scale: 1; }
-  100% { opacity: 0; transform: translate(-50%, -100%); }
+  z-index: 100;
 }
 </style>
 </head>
 
 <body>
 <div class="card">
-  <div id="header-area">
+  <div id="display-area">
     <h1>🎂 生日快樂</h1>
     <p class="sub">這是一份專屬於妳的 20 歲數位驚喜</p>
+    <button id="go">點擊開啟 🎵</button>
   </div>
-
-  <button id="go">開啟祝福 🎵</button>
-
-  <div id="interactive-content"></div>
 
   <div class="secret" id="secret">
     <h2 id="type-title"></h2>
     <p style="font-size: 0.85em; opacity: 0.6; margin-bottom: 10px;">2026 / 01 / 20</p>
     <div id="type-content"></div>
-    <p id="signature" style="text-align:right; margin-top:15px; font-weight:bold; color:var(--gold); opacity:0;"></p>
+    <p id="signature" style="text-align:right; margin-top:15px; font-weight:bold; color:var(--gold); opacity:0; transition: 1s;"></p>
   </div>
 
   <audio id="bgmLoop" src="bg.wav" preload="auto" loop playsinline></audio>
@@ -165,52 +141,44 @@ h1 { margin: 0 0 10px; font-size: clamp(28px, 6vw, 42px); letter-spacing: 2px; }
 
 <script>
 const goBtn = document.getElementById("go");
+const displayArea = document.getElementById("display-area");
 const secret = document.getElementById("secret");
-const interactiveArea = document.getElementById("interactive-content");
-const card = document.querySelector(".card");
 const bgmLoop = document.getElementById("bgmLoop");
-
-let triggered = false;
 
 function vibrate(p) { if(navigator.vibrate) navigator.vibrate(p); }
 
-// 1. 紙屑噴發特效
+// 彩帶噴發
 function fireConfetti() {
-  const colors = ['#fdbb2d', '#ff8e53', '#22c1c3', '#ffffff', '#ffedbc'];
-  for (let i = 0; i < 60; i++) {
+  const colors = ['#fdbb2d', '#ff8e53', '#22c1c3', '#ffffff'];
+  for (let i = 0; i < 50; i++) {
     const p = document.createElement('div');
-    p.style.cssText = `
-      position: fixed; left: ${Math.random() * 100}vw; top: -10px;
-      width: ${Math.random() * 8 + 5}px; height: ${Math.random() * 12 + 5}px;
-      background: ${colors[Math.floor(Math.random() * colors.length)]};
-      z-index: 100; opacity: ${Math.random()};
-      transform: rotate(${Math.random() * 360}deg);
-      pointer-events: none; transition: transform 3s linear, opacity 3s;
-    `;
+    p.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-10px; width:8px; height:12px; background:${colors[Math.floor(Math.random()*colors.length)]}; z-index:100; opacity:${Math.random()}; transform:rotate(${Math.random()*360}deg); pointer-events:none; transition:transform 3s linear, opacity 3s;`;
     document.body.appendChild(p);
     setTimeout(() => {
-      p.style.transform = `translate(${Math.random() * 100 - 50}px, 105vh) rotate(${Math.random() * 1000}deg)`;
+      p.style.transform = `translate(${Math.random()*100-50}px, 105vh) rotate(${Math.random()*1000}deg)`;
       p.style.opacity = '0';
     }, 100);
     setTimeout(() => p.remove(), 4000);
   }
 }
 
-// 2. 打字機效果
-async function typewriter(element, text, speed = 80) {
+// 打字機
+async function typewriter(element, text, speed = 60) {
   for (let char of text) {
     element.innerHTML += char === '\n' ? '<br>' : char;
     await new Promise(r => setTimeout(r, speed));
   }
 }
 
-// 3. 核心倒數與文字爆發
-function triggerFinalSurprise() {
-  const words = ["準備…", "來了…", "20歲快樂！"];
+// 倒數邏輯
+function startSequence() {
+  const words = ["準備…", "來了…", "20 歲快樂！"];
   let i = 0;
+  
+  displayArea.innerHTML = ""; // 清空，準備放倒數
   const cd = document.createElement("div");
   cd.className = "countdown";
-  interactiveArea.appendChild(cd);
+  displayArea.appendChild(cd);
 
   const timer = setInterval(async () => {
     if (i < words.length) {
@@ -219,60 +187,56 @@ function triggerFinalSurprise() {
       i++;
     } else {
       clearInterval(timer);
-      cd.remove();
       
-      // 顯示祝福區
-      secret.style.display = 'block';
+      // 倒數結束，文字大噴發
+      const bt = document.createElement("div");
+      bt.className = "burst-text";
+      bt.innerHTML = "｡˚♡🧁 HAPPY BIRTHDAY 🧁⋆20｡";
+      document.querySelector('.card').appendChild(bt);
+      
       fireConfetti();
       vibrate([100, 50, 200]);
 
-      // 開始打字
-      await typewriter(document.getElementById('type-title'), "🎉 怡靜，20歲生日快樂!!");
-      await typewriter(document.getElementById('type-content'), 
-        "雖然剛認識妳不久（開玩笑），\n還是想祝妳生日快樂ꉂ೭(˵¯̴͒ꇴ¯̴͒˵) ”。\n祝妳心想事成，也記得適時休息，\n工作別太累到自己 ʕ•̀ o •́ ʔ，\n今天妳是最幸福、最幸運的人，\n祝妳今年也順順利利。");
-      
-      const sig = document.getElementById('signature');
-      sig.textContent = "— by jie";
-      sig.style.opacity = "1";
+      // 3秒後移除爆發文字並顯示祝福內容
+      setTimeout(async () => {
+        bt.remove();
+        displayArea.style.display = 'none'; // 隱藏標題區
+        secret.style.display = 'block';
+        
+        await typewriter(document.getElementById('type-title'), "🎉 怡靜，20歲生日快樂!!");
+        await typewriter(document.getElementById('type-content'), 
+          "雖然剛認識妳不久（開玩笑），\n還是想祝妳生日快樂ꉂ೭(˵¯̴͒ꇴ¯̴͒˵) ”。\n祝妳心想事成，也記得適時休息，\n工作別太累到自己 ʕ•̀ o •́ ʔ，\n今天妳是最幸福的人，\n祝妳今年也順順利利。");
+        
+        document.getElementById('signature').textContent = "— by jie";
+        document.getElementById('signature').style.opacity = "1";
+      }, 2500);
     }
   }, 1200);
 }
 
-// 4. 第一步：開始按鈕
+// 第一步：開始
 goBtn.addEventListener("click", () => {
-  if (triggered) return;
-  triggered = true;
-  
-  // 按鈕消失
-  goBtn.style.opacity = '0';
-  setTimeout(() => goBtn.style.display = 'none', 500);
-
-  // 音樂播放
+  goBtn.style.display = "none";
   bgmLoop.volume = 0.3;
-  bgmLoop.play().catch(() => { console.log("音樂播放受阻，需使用者手動觸發"); });
+  bgmLoop.play().catch(() => {});
 
-  // 顯示星星
+  // 出現星星
+  const hint = document.createElement("div");
+  hint.className = "hint-text";
+  hint.textContent = "點擊這顆星星開啟驚喜 ✨";
+  
   const star = document.createElement("div");
   star.className = "click-star";
-  const hint = document.createElement("div");
-  hint.className = "hint-arrow";
-  hint.innerHTML = "點擊這顆星星 <span>✨</span>";
   
-  interactiveArea.appendChild(star);
-  interactiveArea.appendChild(hint);
+  displayArea.appendChild(hint);
+  displayArea.appendChild(star);
 
+  // 點擊星星後：星星消失 -> 進入倒數
   star.addEventListener("click", () => {
     star.remove();
     hint.remove();
     vibrate(60);
-    
-    // 噴發Happy Birthday文字
-    const bt = document.createElement("div");
-    bt.className = "burst-text";
-    bt.textContent = "｡˚♡🧁 HAPPPY BIRTHDAY 🧁⋆20｡";
-    interactiveArea.appendChild(bt);
-    
-    setTimeout(triggerFinalSurprise, 1500);
+    startSequence(); // 進入倒數
   });
 });
 </script>
