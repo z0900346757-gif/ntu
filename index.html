@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>怡靜 20歲生日快樂 🎉</title>
+<title>怡靜 生日快樂 🎉</title>
 
 <style>
 :root { --bg1: #0b1020; --bg2: #1a2a6c; --gold: #fdbb2d; }
@@ -30,84 +30,98 @@ body {
   display: flex; flex-direction: column; justify-content: center;
 }
 
+/* 入口選單樣式 */
+#entry-menu h1 { font-size: 32px; margin-bottom: 30px; }
+.menu-btn {
+  display: block; width: 100%; padding: 20px; margin: 15px 0;
+  border-radius: 15px; border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.1); color: white;
+  font-size: 18px; cursor: pointer; transition: 0.3s;
+  text-decoration: none;
+}
+.menu-btn:hover { background: rgba(255,255,255,0.2); border-color: var(--gold); }
+.menu-btn.locked { opacity: 0.5; cursor: not-allowed; position: relative; }
+.menu-btn.locked::after { content: "🔒 未開啟"; position: absolute; right: 20px; font-size: 14px; opacity: 0.7; }
+
+/* 原本的樣式保持不變 */
 #main-header h1 { margin: 0 0 10px; font-size: clamp(28px, 6vw, 42px); }
 #main-header p { margin: 0 0 30px; opacity: 0.8; }
-
 #go {
   padding: 16px 40px; border-radius: 50px; border: 0; cursor: pointer;
   font-weight: 800; font-size: 18px; color: #332200;
   background: linear-gradient(45deg, var(--gold), #ff8e53);
   align-self: center;
 }
-
 .click-star {
   width: 80px; height: 80px; background: var(--gold); margin: 20px auto;
   clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
   cursor: pointer; animation: star-pulse 1.5s infinite;
 }
 @keyframes star-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-
 .countdown { font-size: 50px; font-weight: 900; text-shadow: 0 0 20px var(--gold); animation: pop 0.5s ease; }
 @keyframes pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
 .burst-text { font-size: 26px; font-weight: bold; color: var(--gold); margin-bottom: 20px; text-shadow: 0 0 15px rgba(253, 187, 45, 0.5); }
-
-/* 蛋糕與吃掉動畫 */
 .cake-container { font-size: 80px; cursor: pointer; transition: 0.3s; margin: 15px 0; position: relative; }
 .cake-container.eat-anim { animation: eat-sequence 1.2s ease forwards; }
-
-@keyframes eat-sequence {
-  0% { transform: scale(1); }
-  20% { transform: scale(1.2); } /* 咬一口前的放大 */
-  40% { transform: scale(0.5); opacity: 0.5; } /* 縮小 */
-  60% { transform: scale(0); opacity: 0; } /* 消失 */
-  100% { transform: scale(0); opacity: 0; }
-}
-
-#yummy-face {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-  font-size: 60px; opacity: 0; pointer-events: none;
-}
-.show-yummy { animation: yummy-pop 1s ease forwards 0.6s; } /* 在蛋糕消失後出現 */
-
-@keyframes yummy-pop {
-  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-  100% { transform: translate(-50%, -80%) scale(1); opacity: 0; }
-}
-
+@keyframes eat-sequence { 0% { transform: scale(1); } 20% { transform: scale(1.2); } 40% { transform: scale(0.5); opacity: 0.5; } 60% { transform: scale(0); opacity: 0; } 100% { transform: scale(0); opacity: 0; } }
+#yummy-face { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 60px; opacity: 0; pointer-events: none; }
+.show-yummy { animation: yummy-pop 1s ease forwards 0.6s; }
+@keyframes yummy-pop { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 100% { transform: translate(-50%, -80%) scale(1); opacity: 0; } }
 .secret { display: none; padding: 10px; line-height: 1.8; text-align: left; }
 .secret h2 { color: var(--gold); margin-top: 0; font-size: 24px; }
 #signature { text-align: right; margin-top: 15px; font-weight: bold; color: var(--gold); }
+
+/* 控制顯示隱藏 */
+.hidden { display: none !important; }
 </style>
 </head>
 
 <body>
+
 <div class="card">
-  <div id="content-wrap">
-    <div id="main-header">
-      <h1>🎂 生日快樂</h1>
-      <p>一個小小的 20 歲生日祝福。</p>
+  <div id="entry-menu">
+    <h1>🎂 怡靜的時光機</h1>
+    <button class="menu-btn" onclick="startAgeContent(20)">20 歲生日祝福</button>
+    <button class="menu-btn locked" onclick="alert('敬請期待 21 歲！')">21 歲生日祝福</button>
+  </div>
+
+  <div id="content-20" class="hidden">
+    <div id="content-wrap">
+      <div id="main-header">
+        <h1>🎂 生日快樂</h1>
+        <p>一個小小的 20 歲生日祝福。</p>
+      </div>
+      <button id="go">點擊開啟 🎵</button>
     </div>
-    <button id="go">點擊開啟 🎵</button>
-  </div>
 
-  <div class="secret" id="secret">
-    <h2 id="type-title"></h2>
-    <p style="font-size: 0.85em; opacity: 0.6; margin-bottom: 10px;">2026 / 01 / 20</p>
-    <div id="type-content"></div>
-    <p id="signature"></p>
+    <div class="secret" id="secret">
+      <h2 id="type-title"></h2>
+      <p style="font-size: 0.85em; opacity: 0.6; margin-bottom: 10px;">2026 / 01 / 20</p>
+      <div id="type-content"></div>
+      <p id="signature"></p>
+    </div>
   </div>
-
-  <audio id="bgmLoop" src="bg.wav" preload="auto" loop playsinline></audio>
 </div>
 
+<audio id="bgmLoop" src="bg.wav" preload="auto" loop playsinline></audio>
+
 <script>
+const entryMenu = document.getElementById("entry-menu");
+const content20 = document.getElementById("content-20");
 const goBtn = document.getElementById("go");
 const contentWrap = document.getElementById("content-wrap");
 const secret = document.getElementById("secret");
 const bgmLoop = document.getElementById("bgmLoop");
 
+// 切換到 20 歲內容
+function startAgeContent(age) {
+  if(age === 20) {
+    entryMenu.classList.add('hidden');
+    content20.classList.remove('hidden');
+  }
+}
+
+// 原本的所有邏輯都不變
 function vibrate(p) { if(navigator.vibrate) navigator.vibrate(p); }
 
 function fireConfetti() {
@@ -128,7 +142,6 @@ async function typewriter(element, text, speed = 60) {
   }
 }
 
-// 許願環節
 function startWishing() {
   contentWrap.innerHTML = `
     <div style="animation: fadeIn 1s ease;">
@@ -147,20 +160,15 @@ function startWishing() {
   const yummyFace = document.getElementById('yummy-face');
 
   cakeBox.addEventListener('click', function() {
-    // 1. 變切片
     cakeEmoji.innerHTML = "🍰"; 
     vibrate(60);
-
-    // 2. 啟動吃掉動畫
     setTimeout(() => {
       cakeBox.classList.add('eat-anim');
       yummyFace.classList.add('show-yummy');
       vibrate([50, 30, 50]);
     }, 400);
-
-    // 3. 動畫結束後進入祝福
     setTimeout(showFinalSecret, 1800);
-  }, { once: true }); // 確保只能點一次
+  }, { once: true });
 }
 
 async function showFinalSecret() {
@@ -177,11 +185,9 @@ function startSequence() {
   const words = ["準備…", "來了…", "20 歲快樂！"];
   let i = 0;
   contentWrap.innerHTML = ""; 
-
   const cd = document.createElement("div");
   cd.className = "countdown";
   contentWrap.appendChild(cd);
-
   const timer = setInterval(() => {
     if (i < words.length) {
       cd.textContent = words[i];
